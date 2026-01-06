@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>id.ac.unpas.sajiwa</groupId>
   <artifactId>sajiwa-resto</artifactId>
   <version>1.0-SNAPSHOT</version>
-
   <name>sajiwa-resto</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -25,51 +23,52 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+        <groupId>com.mysql</groupId>
+        <artifactId>mysql-connector-j</artifactId>
+        <version>8.0.33</version>
+    </dependency>
+
+    <dependency>
+        <groupId>com.formdev</groupId>
+        <artifactId>flatlaf</artifactId>
+        <version>3.0</version>
+    </dependency>
+
+    <dependency>
+        <groupId>net.sf.jasperreports</groupId>
+        <artifactId>jasperreports</artifactId>
+        <version>6.20.0</version>
+    </dependency>
   </dependencies>
 
   <build>
-    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+    <pluginManagement>
       <plugins>
-        <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
-        <plugin>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>3.1.0</version>
-        </plugin>
-        <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
-        <plugin>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>3.0.2</version>
-        </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.0</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.1</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>3.0.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>2.5.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>2.8.2</version>
-        </plugin>
-        <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
-        <plugin>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>3.7.1</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.0.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
   </build>
 </project>
+
+<!--
+CATATAN PRIBADI GROUNDWORK (CHANDRA):
+
+1. Identitas Proyek: Aku nentuin GroupID id.ac.unpas.sajiwa dan ArtifactID sajiwa-resto buat standarisasi paket aplikasi kita biar rapi pas di-build.
+
+2. Java Version 21: Bagian maven.compiler aku kunci di versi 21. Logikanya, biar sinkron sama JDK Eclipse Temurin yang udah aku instal di laptop. Ini penting supaya fitur Java terbaru bisa kepake dan nggak ada mismatch runtime.
+
+3. JUnit: Pustaka ini aku pasang khusus buat keperluan testing. Fungsinya biar sebelum kodingan anggota lain digabungin ke branch dev, aku bisa pastiin fungsi logikanya udah bener dan nggak ada yang rusak.
+
+4. JDBC MySQL Connector: Ini library paling krusial buat tim. Logikanya, ini jembatan biar Java bisa 'ngomong' sama database MySQL. Aku siapin ini biar Murod (Model) bisa langsung eksekusi query SQL tanpa kendala koneksi.
+
+5. FlatLaf (Look and Feel): Aku sengaja pilih library ini buat ngerombak tampilan standar Swing yang kaku. Fungsinya biar Rahma (View) bisa dapet desain UI yang lebih modern, bersih, dan nggak keliatan kayak aplikasi jadul.
+
+6. JasperReports: Library ini aku masukin buat ngejar nilai bonus. Logikanya, aku pengen Roy bisa bikin fitur ekspor laporan ke PDF dengan gampang karena semua engine-nya udah aku siapin di sini.
+
+7. Maven Compiler Plugin: Ini instruksi tambahan buat proses build. Fungsinya buat mastiin Maven bener-bener nurutin aturan main Java 21 yang udah aku buat di atas pas lagi ngerubah kode kita jadi file aplikasi.
+-->

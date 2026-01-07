@@ -12,7 +12,10 @@ public class BukuModel {
      */
     public List<Buku> getAllBuku() {
         List<Buku> listBuku = new ArrayList<>();
-        String sql = "SELECT * FROM buku"; 
+        String sql = "SELECT b.isbn, b.judul, b.stok, " +
+                "k.id_kategori, k.nama_kategori" +
+                "FROM buku b " +
+                "JOIN kategori_buku k ON b.id_kategori = k.id_kategori";
 
         // Menggunakan try-with-resources untuk manajemen koneksi yang aman
         try (Connection conn = KoneksiDB.getConnection();
@@ -25,6 +28,8 @@ public class BukuModel {
                 b.setIsbn(rs.getString("isbn"));
                 b.setJudul(rs.getString("judul"));
                 b.setStok(rs.getInt("stok"));
+                b.setIdKategori(rs.getInt("id_kategori"));
+                b.setNamaKategori(rs.getString("nama_kategori"));
                 
                 listBuku.add(b);
             }
@@ -39,7 +44,7 @@ public class BukuModel {
      * Method: CREATE (Menambah Data Buku Baru)
      */
     public void addBuku(Buku buku) {
-        String sql = "INSERT INTO buku (isbn, judul, stok) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO buku (isbn, judul, stok, id_kategori) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = KoneksiDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -47,6 +52,7 @@ public class BukuModel {
             pstmt.setString(1, buku.getIsbn());
             pstmt.setString(2, buku.getJudul());
             pstmt.setInt(3, buku.getStok());
+            pstmt.setInt(4, buku.getIdKategori());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -58,14 +64,16 @@ public class BukuModel {
      * Method: UPDATE (Mengubah Data Buku)
      */
     public void updateBuku(Buku buku) {
-        String sql = "UPDATE buku SET judul = ?, stok = ? WHERE isbn = ?";
+        String sql = "UPDATE buku SET judul = ?, stok = ?, id_kategori = ? " +
+                "WHERE isbn = ?";
 
         try (Connection conn = KoneksiDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, buku.getJudul());
             pstmt.setInt(2, buku.getStok());
-            pstmt.setString(3, buku.getIsbn());
+            pstmt.setInt(3, buku.getIdKategori());
+            pstmt.setString(4, buku.getIsbn());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {

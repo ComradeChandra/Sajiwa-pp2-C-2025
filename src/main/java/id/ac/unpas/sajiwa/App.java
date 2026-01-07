@@ -1,18 +1,28 @@
 package id.ac.unpas.sajiwa;
 
-import id.ac.unpas.sajiwa.database.KoneksiDB; // Import file koneksi buatanmu
-import java.sql.SQLException;
+// Import MainFrame yang ada di folder view
+import id.ac.unpas.sajiwa.view.MainFrame;
+// Import FlatLaf biar ganteng
+import com.formdev.flatlaf.FlatLightLaf;
+import javax.swing.UIManager;
+import javax.swing.SwingUtilities;
 
 public class App {
+    
+    // INI ADALAH PINTU MASUK UTAMA APLIKASI
     public static void main(String[] args) {
-        System.out.println("Cek Koneksi Database...");
         
+        // 1. Dandanin dulu pake FlatLaf
         try {
-            // Ini cuma buat ngetes: Panggil fungsi koneksi yang udah kamu bikin tadi
-            KoneksiDB.getConnection(); 
-            // Kalau sukses, dia bakal nge-print pesan dari dalem KoneksiDB
-        } catch (SQLException e) {
-            e.printStackTrace();
+            UIManager.setLookAndFeel(new FlatLightLaf());
+        } catch (Exception ex) {
+            System.err.println("Gagal load skin");
         }
+        
+        // 2. Panggil MainFrame (Si Sidebar tadi)
+        SwingUtilities.invokeLater(() -> {
+            MainFrame aplikasi = new MainFrame();
+            aplikasi.setVisible(true); // TAMPILKAN!
+        });
     }
 }

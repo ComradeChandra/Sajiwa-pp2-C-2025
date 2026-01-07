@@ -1,83 +1,60 @@
 package id.ac.unpas.sajiwa.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Peminjaman {
-    private int id_peminjaman;
-    private int id_anggota;
-    private String isbn;
-    private Date tanggal_pinjam;
-    private Date tanggal_kembali;
+    private int idPeminjaman;
+    private int idAnggota;
+    private String nimAnggota;
+    private String namaAnggota;
+    private String isbnBuku;
+    private String judulBuku;
+    private Date tanggalPinjam;
+    private Date tanggalKembali;
     private String status;
 
-    public Peminjaman() {
-    }
+    public Peminjaman() {}
 
-    public Peminjaman(int id_peminjaman, int id_anggota, String isbn, Date tanggal_pinjam, Date tanggal_kembali, String status) {
-        this.id_peminjaman = id_peminjaman;
-        this.id_anggota = id_anggota;
-        this.isbn = isbn;
-        this.tanggal_pinjam = tanggal_pinjam;
-        this.tanggal_kembali = tanggal_kembali;
+    public Peminjaman(int idPeminjaman, int idAnggota, String isbnBuku, Date tanggalPinjam, Date tanggalKembali, String status) {
+        this.idPeminjaman = idPeminjaman;
+        this.idAnggota = idAnggota;
+        this.isbnBuku = isbnBuku;
+        this.tanggalPinjam = tanggalPinjam;
+        this.tanggalKembali = tanggalKembali;
         this.status = status;
     }
 
-    // Constructor tanpa idPeminjaman (misal untuk insert baru, auto increment)
-    public Peminjaman(int id_anggota, String isbn, Date tanggal_pinjam, Date tanggal_kembali, String status) {
-        this.id_anggota = id_anggota;
-        this.isbn = isbn;
-        this.tanggal_pinjam = tanggal_pinjam;
-        this.tanggal_kembali = tanggal_kembali;
-        this.status = status;
-    }
+    public int getIdPeminjaman() { return idPeminjaman; }
+    public void setIdPeminjaman(int idPeminjaman) { this.idPeminjaman = idPeminjaman; }
 
-    // ===================== Getter & Setter =====================
+    public int getIdAnggota() { return idAnggota; }
+    public void setIdAnggota(int idAnggota) { this.idAnggota = idAnggota; }
 
-    public int getIdPeminjaman() {
-        return id_peminjaman;
-    }
+    public String getNimAnggota() { return nimAnggota; }
+    public void setNimAnggota(String nimAnggota) { this.nimAnggota = nimAnggota; }
 
-    public void setIdPeminjaman(int idPeminjaman) {
-        this.id_peminjaman = idPeminjaman;
-    }
+    public String getNamaAnggota() { return namaAnggota; }
+    public void setNamaAnggota(String namaAnggota) { this.namaAnggota = namaAnggota; }
 
-    public int getIdAnggota() {
-        return id_anggota;
-    }
+    public String getIsbnBuku() { return isbnBuku; }
+    public void setIsbnBuku(String isbnBuku) { this.isbnBuku = isbnBuku; }
 
-    public void setIdAnggota(int idAnggota) {
-        this.id_anggota = idAnggota;
-    }
+    public String getJudulBuku() { return judulBuku; }
+    public void setJudulBuku(String judulBuku) { this.judulBuku = judulBuku; }
 
-    public String getIsbn() {
-        return isbn;
-    }
+    public Date getTanggalPinjam() { return tanggalPinjam; }
+    public void setTanggalPinjam(Date tanggalPinjam) { this.tanggalPinjam = tanggalPinjam; }
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
+    public Date getTanggalKembali() { return tanggalKembali; }
+    public void setTanggalKembali(Date tanggalKembali) { this.tanggalKembali = tanggalKembali; }
 
-    public Date getTanggalPinjam() {
-        return tanggal_pinjam;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public void setTanggalPinjam(Date tanggalPinjam) {
-        this.tanggal_pinjam = tanggalPinjam;
-    }
-
-    public Date getTanggalKembali() {
-        return tanggal_kembali;
-    }
-
-    public void setTanggalKembali(Date tanggalKembali) {
-        this.tanggal_kembali     = tanggalKembali;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    /* CATATAN PRIBADI (CHANDRA):
+       1. POJO (Plain Old Java Object): Class sederhana untuk menampung data Peminjaman.
+       2. Encapsulation: Semua atribut private dan diakses lewat Getter/Setter.
+       3. Extra Fields: Ada atribut tambahan (nimAnggota, namaAnggota, judulBuku) yang tidak ada di tabel database fisik,
+          tapi berguna untuk menampung hasil JOIN query supaya bisa ditampilkan di tabel history tanpa query ulang.
+    */
 }

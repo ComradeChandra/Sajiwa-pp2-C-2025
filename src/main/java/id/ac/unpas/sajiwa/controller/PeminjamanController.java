@@ -124,4 +124,13 @@ public class PeminjamanController {
         refreshTable();
         loadComboData(); // Reload stok
     }
+
+    /* CATATAN PRIBADI (CHANDRA):
+       1. New Controller: Menghandle logika Transaksi (Peminjaman & Pengembalian).
+       2. Logika Unit:
+          - Pinjam: Cek stok buku, jika ada -> insert transaksi -> kurangi stok (-1).
+          - Kembali: Update status transaksi -> update tanggal kembali -> tambah stok (+1).
+       3. Integrasi: Menggabungkan AnggotaModel (untuk pilih peminjam) dan BukuModel (untuk pilih buku).
+       4. Auto Reload: Setiap aksi berhasil, data combo box & tabel di-refresh biar stok selalu update.
+    */
 }

@@ -105,5 +105,6 @@ public class KategoriBukuController {
        1. New Controller: Dibuat khusus untuk misahin logika dari KategoriPanel (punya Fitri).
        2. Integrasi: Menghubungkan KategoriPanel (View) dengan KategoriBukuModel (Model).
        3. Error Handling: Menambahkan feedback JOptionPane ke user lewat view biar interaktif.
+       4. Search: Menggunakan stream filtering untuk pencarian data Kategori.
     */
 }

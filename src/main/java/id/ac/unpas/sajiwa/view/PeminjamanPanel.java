@@ -149,4 +149,11 @@ public class PeminjamanPanel extends JPanel {
             });
         }
     }
+
+    /* CATATAN PRIBADI (CHANDRA):
+       1. New View: Panel UI untuk form transaksi.
+       2. Desain: Menggunakan GridBagLayout supaya form rapi (Label kiri, Input kanan).
+       3. Komponen Pintar: Pakai JComboBox untuk pilih Anggota & Buku (User gak perlu hafal ID/ISBN).
+       4. Hidden Column: Tabel menyimpan ID Anggota & ISBN di kolom tersembunyi (width=0) buat keperluan coding back-end.
+    */
 }

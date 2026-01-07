@@ -180,20 +180,23 @@ public class MainFrame extends JFrame {
 
 /*
  * ==================================================================================
- * CATATAN PENGEMBANG (DEV LOG) - TANGGAL: HARI INI
+ * CATATAN PRIBADI (CHANDRA)
  * ==================================================================================
- * * 1. Integrasi AnggotaPanel:
- * Tombol menu "Data Anggota" sekarang sudah aktif sepenuhnya. Kode placeholder 
- * (JOptionPane) sudah saya hapus dan diganti dengan pemanggilan object 
- * new AnggotaPanel(). Jadi pas diklik, tampilan di sebelah kanan otomatis berubah.
- * * 2. Perihal Database:
- * Pastikan tabel 'anggota' di database sudah dibuat sesuai struktur di model, 
- * karena AnggotaPanel akan langsung request data begitu dibuka. Kalau XAMPP 
- * belum nyala, kemungkinan bakal muncul error di console atau tabelnya kosong.
- * * 3. Kosmetika UI:
- * Warna sidebar sudah diubah ke Navy (25, 42, 86) dan tombol menu jadi Biru Muda 
- * (180, 210, 255) sesuai permintaan terakhir biar senada sama panel lainnya.
- * Efek hover tombol juga sudah disesuaikan biar warnanya gak tabrakan.
+ * 1. Navigation Logic:
+ *    - Menggunakan contentPanel (JPanel kosong di tengah) sebagai container halaman.
+ *    - Method gantiHalaman(JPanel panelBaru) bertugas:
+ *      a. Menghapus panel lama (contentPanel.removeAll).
+ *      b. Menambahkan panel baru yang dikirim via parameter (contentPanel.add).
+ *      c. Me-refresh tampilan agar perubahan terlihat (revalidate & repaint).
+ *
+ * 2. Layout Management:
+ *    - Sidebar menggunakan BoxLayout (Y_AXIS) agar tombol tersusun vertikal rapi.
+ *    - Content Area menggunakan BorderLayout agar panel anak mengisi seluruh ruang kosong.
+ *
+ * 3. Integrasi Modules:
+ *    - Menghubungkan semua modul (Buku, Anggota, Kategori, Transaksi) ke satu navigasi pusat.
+ *    - Tombol "Data Anggota" & "Transaksi" sekarang sudah aktif memanggil Panel masing-masing.
+ */
  * * 4. Next Step:
  * Tinggal lanjutin bagian "Laporan" yang masih kosong. Logic ganti halamannya 
  * nanti sama persis, tinggal bikin class LaporanPanel baru.

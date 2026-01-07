@@ -118,4 +118,11 @@ public class PeminjamanModel {
             pstmt.executeUpdate();
         } catch(SQLException e) {}
     }
+
+    /* CATATAN PRIBADI (CHANDRA):
+       1. New Model: Representasi tabel "peminjaman" di database.
+       2. Fitur Spesial: Auto Create Table (CREATE TABLE IF NOT EXISTS) biar gak perlu import SQL manual.
+       3. Relasi: Join 3 tabel sekaligus (peminjaman - anggota - buku) biar data yang tampil di tabel lengkap (ada nama & judul).
+       4. Trigger Logic: Di sini ada logika "Kurangi Stok" saat pinjam & "Tambah Stok" saat kembali secara otomatis.
+    */
 }

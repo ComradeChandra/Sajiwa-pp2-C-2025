@@ -50,4 +50,11 @@ public class Peminjaman {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    /* CATATAN PRIBADI (CHANDRA):
+       1. POJO (Plain Old Java Object): Class sederhana untuk menampung data Peminjaman.
+       2. Encapsulation: Semua atribut private dan diakses lewat Getter/Setter.
+       3. Extra Fields: Ada atribut tambahan (nimAnggota, namaAnggota, judulBuku) yang tidak ada di tabel database fisik,
+          tapi berguna untuk menampung hasil JOIN query supaya bisa ditampilkan di tabel history tanpa query ulang.
+    */
 }

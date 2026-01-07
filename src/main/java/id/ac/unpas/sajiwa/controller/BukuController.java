@@ -150,4 +150,12 @@ public class BukuController {
     private void resetForm() {
         view.clearForm();
     }
+
+    /* CATATAN PRIBADI (CHANDRA):
+       1. Refactoring: Memindahkan logika CRUD Buku dari View ke sini (MVC Pattern).
+       2. Search Logic: Implementasi fitur "Cari Buku" menggunakan Java Stream Filter.
+          - Kelebihan: Cepat, tidak perlu query DB berulang-ulang.
+          - Cara kerja: Load semua data -> Filter di memori berdasarkan Judul/ISBN/Kategori -> Update Tabel.
+       3. Validasi: Menjaga agar stok buku yang diinput user harus berupa angka (NumberFormatException handling).
+    */
 }

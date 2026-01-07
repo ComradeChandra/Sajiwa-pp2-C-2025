@@ -5,22 +5,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * CLASS MODEL: BUKU (CRUD)
- * ------------------------
- * Kelas ini bertanggung jawab menangani seluruh operasi database (CRUD)
- * untuk tabel 'buku'. Mengimplementasikan pemisahan logika (MVC) agar
- * Controller tidak berisi kode SQL.
- */
 public class BukuModel {
 
     /**
      * Method: READ (Menampilkan Semua Data)
-     * Mengambil seluruh baris data dari tabel buku.
-     * * Alur Proses:
-     * 1. Buka Koneksi ke Database.
-     * 2. Eksekusi Query SELECT.
-     * 3. Konversi hasil (ResultSet) menjadi List objek Buku.
      */
     public List<Buku> getAllBuku() {
         List<Buku> listBuku = new ArrayList<>();
@@ -47,13 +35,65 @@ public class BukuModel {
         return listBuku;
     }
     
-    // TODO: Implementasikan method create(), update(), dan delete() di bawah ini.
+    /**
+     * Method: CREATE (Menambah Data Buku Baru)
+     */
+    public void addBuku(Buku buku) {
+        String sql = "INSERT INTO buku (isbn, judul, stok) VALUES (?, ?, ?)";
 
-    /* CATATAN PRIBADI (CHANDRA):
-       1. Arsitektur MVC: File ini adalah implementasi tugas Modul 10 untuk memisahkan
-          logika database dari View/Controller.
-       2. JDBC Standar: Menggunakan Statement dan ResultSet sesuai materi praktikum.
-       3. Resource Management: Menggunakan try-with-resources agar koneksi database
-          otomatis ditutup (close) setelah query selesai dijalankan.
-    */
+        try (Connection conn = KoneksiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, buku.getIsbn());
+            pstmt.setString(2, buku.getJudul());
+            pstmt.setInt(3, buku.getStok());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Gagal menambah buku: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Method: UPDATE (Mengubah Data Buku)
+     */
+    public void updateBuku(Buku buku) {
+        String sql = "UPDATE buku SET judul = ?, stok = ? WHERE isbn = ?";
+
+        try (Connection conn = KoneksiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, buku.getJudul());
+            pstmt.setInt(2, buku.getStok());
+            pstmt.setString(3, buku.getIsbn());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Gagal mengupdate buku: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Method: DELETE (Menghapus Data Buku)
+     */
+    public void deleteBuku(String isbn) {
+        String sql = "DELETE FROM buku WHERE isbn = ?";
+
+        try (Connection conn = KoneksiDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, isbn);
+
+            int result = pstmt.executeUpdate();
+
+            if (result > 0) {
+                System.out.println("Buku berhasil dihapus.");
+            } else {
+                System.out.println("Gagal menghapus buku. ISBN tidak ditemukan.");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Gagal menghapus buku: " + e.getMessage());
+        }
+    }
 }

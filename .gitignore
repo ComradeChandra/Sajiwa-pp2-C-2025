@@ -3,3 +3,8 @@
 /dist/
 *.class
 *.log
+*.jar
+.nb-gradle/
+build/
+.vscode/
+.idea/

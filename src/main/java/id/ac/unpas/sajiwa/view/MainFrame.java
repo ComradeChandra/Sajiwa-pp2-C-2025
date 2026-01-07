@@ -1,0 +1,196 @@
+package id.ac.unpas.sajiwa.view;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+
+/**
+ * MainFrame = RUMAH UTAMA APLIKASI
+ * Isinya: Sidebar (Kiri) + Content Panel (Kanan)
+ */
+public class MainFrame extends JFrame {
+    
+    // Panel khusus buat gonta-ganti isi halaman (Buku/Anggota/dll)
+    private JPanel contentPanel; 
+
+    public MainFrame() {
+        initComponents();
+    }
+
+    private void initComponents() {
+        // 1. Setup Jendela Utama
+        setTitle("Sajiwa Library System v1.0");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(1200, 750); // Ukuran default pas dibuka
+        setLocationRelativeTo(null); // Biar muncul di tengah layar
+        
+        // Kita pake layout BorderLayout (Barat, Timur, Tengah, dll)
+        setLayout(new BorderLayout());
+        
+        // ==========================================================
+        // 2. BIKIN SIDEBAR (MENU KIRI)
+        // ==========================================================
+        JPanel sidebar = new JPanel();
+        sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
+        sidebar.setBackground(new Color(25, 42, 86)); // Warna Navy (Sesuai request)
+        sidebar.setPreferredSize(new Dimension(260, 0)); // Lebar Sidebar
+        sidebar.setBorder(new EmptyBorder(30, 20, 30, 20)); // Jarak pinggir (Padding)
+        
+        // --- LOGO & JUDUL ---
+        JLabel lblIcon = new JLabel("🏛️"); // Ceritanya Logo
+        lblIcon.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 40));
+        lblIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        JLabel lblTitle = new JLabel("SAJIWA");
+        lblTitle.setFont(new Font("SansSerif", Font.BOLD, 28));
+        lblTitle.setForeground(Color.WHITE);
+        lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        JLabel lblSubtitle = new JLabel("Library System");
+        lblSubtitle.setFont(new Font("SansSerif", Font.PLAIN, 12));
+        lblSubtitle.setForeground(new Color(189, 195, 199)); // Abu muda
+        lblSubtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        // Masukin Logo ke Sidebar
+        sidebar.add(lblIcon);
+        sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
+        sidebar.add(lblTitle);
+        sidebar.add(lblSubtitle);
+        sidebar.add(Box.createRigidArea(new Dimension(0, 50))); // Jarak ke tombol menu
+        
+        // --- TOMBOL MENU ---
+        // Warna Button Biru Muda, Teks Navy
+        Color btnColor = new Color(180, 210, 255);
+        Color txtColor = new Color(25, 42, 86);
+
+        JButton btnBuku = createMenuButton("📚  Data Buku", btnColor, txtColor);
+        JButton btnAnggota = createMenuButton("👥  Data Anggota", btnColor, txtColor);
+        JButton btnKategori = createMenuButton("🏷️  Kategori Buku", btnColor, txtColor);
+        JButton btnLaporan = createMenuButton("📄  Laporan", btnColor, txtColor);
+        JButton btnLogout = createMenuButton("🚪  Logout", new Color(231, 76, 60), Color.WHITE);
+        
+        // --- LOGIKA PINDAH HALAMAN (NAVIGATION) ---
+        
+        // 1. Klik Menu Buku -> Tampilin BukuPanel
+        btnBuku.addActionListener(e -> {
+            gantiHalaman(new BukuPanel()); 
+        });
+        
+        // 2. Klik Menu Anggota -> Tampilin AnggotaPanel (SUDAH DIPERBAIKI)
+        btnAnggota.addActionListener(e -> {
+            // Logic pesan "Sedang dikerjakan" sudah dihapus
+            // Sekarang langsung load panel anggota
+            gantiHalaman(new AnggotaPanel()); 
+        });
+        
+        btnKategori.addActionListener(e -> {
+            gantiHalaman(new KategoriPanel());
+        });
+        
+        // 3. Klik Laporan
+        btnLaporan.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, "Fitur Laporan Coming Soon!");
+        });
+
+        // 4. Klik Logout
+        btnLogout.addActionListener(e -> {
+            int confirm = JOptionPane.showConfirmDialog(this, "Yakin mau keluar?", "Logout", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                System.exit(0);
+            }
+        });
+        
+        // Masukin tombol ke sidebar
+        sidebar.add(btnBuku);
+        sidebar.add(Box.createRigidArea(new Dimension(0, 10))); // Spasi antar tombol
+        sidebar.add(btnAnggota);
+        sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
+        sidebar.add(btnKategori);
+        sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
+        sidebar.add(btnLaporan);
+        
+        // Tombol Logout ditaruh paling bawah (pake Glue)
+        sidebar.add(Box.createVerticalGlue()); 
+        sidebar.add(btnLogout);
+
+        // ==========================================================
+        // 3. BIKIN CONTENT PANEL (AREA TENGAH)
+        // ==========================================================
+        contentPanel = new JPanel(new BorderLayout());
+        contentPanel.setBackground(Color.WHITE);
+        
+        // DEFAULT VIEW: Pas pertama aplikasi dibuka, langsung munculin BukuPanel
+        contentPanel.add(new BukuPanel(), BorderLayout.CENTER);
+
+        // Gabungin Sidebar & Content ke Frame Utama
+        add(sidebar, BorderLayout.WEST);
+        add(contentPanel, BorderLayout.CENTER);
+    }
+    
+    // --- Method Helper: Buat Gonta-Ganti Isi Halaman ---
+    private void gantiHalaman(JPanel panelBaru) {
+        contentPanel.removeAll(); // Buang panel lama
+        contentPanel.add(panelBaru, BorderLayout.CENTER); // Pasang panel baru
+        contentPanel.revalidate(); // Refresh layout
+        contentPanel.repaint(); // Gambar ulang
+    }
+    
+    // --- Method Helper: Buat Bikin Tombol Sidebar (Updated Parameter) ---
+    private JButton createMenuButton(String text, Color bg, Color fg) {
+        JButton btn = new JButton(text);
+        btn.setMaximumSize(new Dimension(220, 50)); // Ukuran tombol
+        btn.setBackground(bg); // Warna dasar custom
+        btn.setForeground(fg); // Warna teks custom
+        btn.setFont(new Font("SansSerif", Font.BOLD, 14));
+        btn.setFocusPainted(false); // Ilangin garis fokus
+        btn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // Padding teks
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Kursor jadi tangan
+        btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        // Efek Hover (Warna berubah pas mouse lewat)
+        btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn.setBackground(bg.darker()); // Jadi sedikit lebih gelap pas disorot
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn.setBackground(bg); // Balik ke warna asal
+            }
+        });
+        return btn;
+    }
+
+    public static void main(String[] args) {
+         try {
+            UIManager.setLookAndFeel(new com.formdev.flatlaf.FlatLightLaf());
+        } catch (Exception ex) {
+            System.err.println("Gagal load skin FlatLaf.");
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            new MainFrame().setVisible(true);
+        });
+    }
+}
+
+
+/*
+ * ==================================================================================
+ * CATATAN PENGEMBANG (DEV LOG) - TANGGAL: HARI INI
+ * ==================================================================================
+ * * 1. Integrasi AnggotaPanel:
+ * Tombol menu "Data Anggota" sekarang sudah aktif sepenuhnya. Kode placeholder 
+ * (JOptionPane) sudah saya hapus dan diganti dengan pemanggilan object 
+ * new AnggotaPanel(). Jadi pas diklik, tampilan di sebelah kanan otomatis berubah.
+ * * 2. Perihal Database:
+ * Pastikan tabel 'anggota' di database sudah dibuat sesuai struktur di model, 
+ * karena AnggotaPanel akan langsung request data begitu dibuka. Kalau XAMPP 
+ * belum nyala, kemungkinan bakal muncul error di console atau tabelnya kosong.
+ * * 3. Kosmetika UI:
+ * Warna sidebar sudah diubah ke Navy (25, 42, 86) dan tombol menu jadi Biru Muda 
+ * (180, 210, 255) sesuai permintaan terakhir biar senada sama panel lainnya.
+ * Efek hover tombol juga sudah disesuaikan biar warnanya gak tabrakan.
+ * * 4. Next Step:
+ * Tinggal lanjutin bagian "Laporan" yang masih kosong. Logic ganti halamannya 
+ * nanti sama persis, tinggal bikin class LaporanPanel baru.
+ * * ==================================================================================
+ */

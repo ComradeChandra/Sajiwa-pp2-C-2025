@@ -1,24 +1,31 @@
 package id.ac.unpas.sajiwa.model;
 
-/**
- * CLASS ENTITY: BUKU
- * -------------------
- * Fungsinya hanya sebagai objek pembungkus (wrapper) data.
- * Data dari database akan dimasukkan ke sini sebelum dikirim ke Controller/View.
- */
-public class Buku {
+public class Buku { // Recompile trigger
     // Atribut sesuai dengan kolom di Database MySQL
     private String isbn;
     private String judul;
     private int stok;
+    
+    // [TAMBAHAN LEAD] Atribut ini ditambahkan agar sinkron dengan BukuController
+    // Controller membutuhkan setter/getter ini untuk mengisi data default ("-")
+    private String pengarang;
+    private String penerbit;
+    private int tahunTerbit;
+
+    // Atribut Tambahan (Opsional/Relasi)
+    private int id_kategori;
+    private String nama_kategori;
 
     // Constructor Kosong (Penting untuk inisialisasi awal tanpa data)
     public Buku() {}
 
-    // Constructor Lengkap (Untuk mengisi data secara langsung saat objek dibuat)
-    public Buku(String isbn, String judul, int stok) {
+    // Constructor Lengkap (Diupdate biar support semua data)
+    public Buku(String isbn, String judul, String pengarang, String penerbit, int tahunTerbit, int stok) {
         this.isbn = isbn;
         this.judul = judul;
+        this.pengarang = pengarang;
+        this.penerbit = penerbit;
+        this.tahunTerbit = tahunTerbit;
         this.stok = stok;
     }
 
@@ -34,12 +41,31 @@ public class Buku {
 
     public int getStok() { return stok; }
     public void setStok(int stok) { this.stok = stok; }
-    
-    /* CATATAN PRIBADI (CHANDRA):
-    1. Konsep Entity: File ini merepresentasikan satu baris data di tabel 'buku'.
-    2. Kesepakatan Tim: Nama variabel (isbn, judul, stok) WAJIB sama persis 
-       atau mendekati nama kolom di database biar kita nggak pusing mapping-nya.
-    3. Tugas Model (Bagian 1): Ini adalah bagian Model yang Murod sebut "Atribut". 
-       Benar, tapi ini baru separuh dari tugas Model.
-    */
+
+    // [TAMBAHAN LEAD] Getter & Setter Baru (Solusi Error Controller)
+    public String getPengarang() { return pengarang; }
+    public void setPengarang(String pengarang) { this.pengarang = pengarang; }
+
+    public String getPenerbit() { return penerbit; }
+    public void setPenerbit(String penerbit) { this.penerbit = penerbit; }
+
+    public int getTahunTerbit() { return tahunTerbit; }
+    public void setTahunTerbit(int tahunTerbit) { this.tahunTerbit = tahunTerbit; }
+
+    // Getter & Setter Kategori (Bawaan Murod)
+    public int getIdKategori() {
+        return id_kategori;
+    }
+
+    public void setIdKategori(int idKategori) {
+        this.id_kategori = idKategori;
+    }
+
+    public String getNamaKategori() {
+        return nama_kategori;
+    }
+
+    public void setNamaKategori(String namaKategori) {
+        this.nama_kategori = namaKategori;
+    }
 }

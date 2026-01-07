@@ -1,7 +1,7 @@
 package id.ac.unpas.sajiwa.view;
 
+import id.ac.unpas.sajiwa.controller.BukuController; // Sambungin ke Otak Baru
 import id.ac.unpas.sajiwa.model.Buku;
-import id.ac.unpas.sajiwa.model.BukuModel;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -10,21 +10,24 @@ import java.util.List;
 
 /**
  * Panel View untuk mengelola data Buku
- * SUDAH DIPERBAIKI: Terkoneksi Database + TAMPILAN KEREN (STYLING)
+ * SUDAH DIPERBAIKI: Menggunakan Konsep MVC (View Pasif)
  */
 public class BukuPanel extends JPanel {
     // Komponen UI
     private JTextField txtIsbn, txtJudul, txtStok, txtCari, txtId;
+    private JButton btnTambah, btnUpdate, btnHapus, btnBersih, btnCari, btnRefresh;
     private JTable tableBuku;
     private DefaultTableModel tableModel;
-    private BukuModel bukuModel;
+    
+    // Helper untuk Logic
     private String selectedIsbn = null;
     
     public BukuPanel() {
-        // [CATATAN] Ini inisialisasi model biar bisa ngobrol sama database
-        bukuModel = new BukuModel();
         initComponents();
-        loadData(); // Load data pas panel pertama kali dibuka
+        
+        // [PENTING] Panggil Controller biar dia yang ngatur logika tombol & data
+        // Jadi pas Panel ini dibuat, Controller langsung bekerja.
+        new BukuController(this);
     }
     
     private void initComponents(){
@@ -91,16 +94,11 @@ public class BukuPanel extends JPanel {
         JPanel panelButtons = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         panelButtons.setOpaque(false);
         
-        JButton btnTambah = createStyledButton("➕ Simpan", new Color(46, 204, 113), Color.WHITE); // Hijau
-        JButton btnUpdate = createStyledButton("✏️ Update", new Color(243, 156, 18), Color.WHITE); // Orange
-        JButton btnHapus = createStyledButton("🗑️ Hapus", new Color(231, 76, 60), Color.WHITE);   // Merah
-        JButton btnBersih = createStyledButton("🔄 Reset", new Color(52, 152, 219), Color.WHITE);  // Biru
-        
-        // Event Listener
-        btnTambah.addActionListener(e -> tambahBuku());
-        btnUpdate.addActionListener(e -> updateBuku());
-        btnHapus.addActionListener(e -> hapusBuku());
-        btnBersih.addActionListener(e -> bersihkanForm());
+        // Inisialisasi Tombol (Listenernya ditangani Controller)
+        btnTambah = createStyledButton("➕ Simpan", new Color(46, 204, 113), Color.WHITE); // Hijau
+        btnUpdate = createStyledButton("✏️ Update", new Color(243, 156, 18), Color.WHITE); // Orange
+        btnHapus = createStyledButton("🗑️ Hapus", new Color(231, 76, 60), Color.WHITE);   // Merah
+        btnBersih = createStyledButton("🔄 Reset", new Color(52, 152, 219), Color.WHITE);  // Biru
         
         panelButtons.add(btnTambah);
         panelButtons.add(btnUpdate);
@@ -123,17 +121,15 @@ public class BukuPanel extends JPanel {
         panelCari.add(new JLabel("🔍 Cari Judul/ISBN:"));
         txtCari = new JTextField(25);
         panelCari.add(txtCari);
-        JButton btnCari = new JButton("Cari");
-        JButton btnRefresh = new JButton("Refresh");
         
-        btnCari.addActionListener(e -> cariBuku());
-        btnRefresh.addActionListener(e -> loadData());
+        btnCari = new JButton("Cari");
+        btnRefresh = new JButton("Refresh");
         
         panelCari.add(btnCari);
         panelCari.add(btnRefresh);
         
         // Setup Tabel
-        String[] columns = {"ISBN", "Judul Buku", "Stok Tersedia"};
+        String[] columns = {"ISBN", "Judul Buku", "Stok Tersedia"}; // ID Kategori bisa disembunyikan atau ditambahin
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -145,7 +141,7 @@ public class BukuPanel extends JPanel {
         tableBuku.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tableBuku.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 13)); // Header Tebal
         
-        // Event Listener Tabel
+        // Event Listener Tabel (Biar Controller tau baris mana yang dipilih)
         tableBuku.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 int selectedRow = tableBuku.getSelectedRow();
@@ -154,6 +150,7 @@ public class BukuPanel extends JPanel {
                     txtIsbn.setText(tableModel.getValueAt(selectedRow, 0).toString());
                     txtJudul.setText(tableModel.getValueAt(selectedRow, 1).toString());
                     txtStok.setText(tableModel.getValueAt(selectedRow, 2).toString());
+                    // txtId.setText(...) // Perlu ditangani Controller nanti kalau kolomnya ada
                     
                     txtIsbn.setEditable(false); 
                     txtIsbn.setBackground(new Color(240, 240, 240)); // [STYLE] Jadi abu-abu
@@ -166,8 +163,6 @@ public class BukuPanel extends JPanel {
         panelTabel.add(scrollPane, BorderLayout.CENTER);
         
         // Gabungin Semuanya
-        // Kita tumpuk: Form di atas (North), Tabel di tengah (Center)
-        // Tapi kita bungkus Form pake panelCenter biar rapi
         panelCenter.add(panelForm, BorderLayout.NORTH);
         panelCenter.add(panelTabel, BorderLayout.CENTER);
         
@@ -184,126 +179,42 @@ public class BukuPanel extends JPanel {
         return btn;
     }
     
-    // --- [CATATAN] Validasi Input ---
-    private boolean validateForm() {
-        if (txtIsbn.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "ISBN harus diisi!", "Validasi", JOptionPane.WARNING_MESSAGE);
-            txtIsbn.requestFocus(); return false;
-        }
-        if (txtJudul.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Judul harus diisi!", "Validasi", JOptionPane.WARNING_MESSAGE);
-            txtJudul.requestFocus(); return false;
-        }
-        if (txtStok.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Stok harus diisi!", "Validasi", JOptionPane.WARNING_MESSAGE);
-            txtStok.requestFocus(); return false;
-        }
-        try {
-            int stok = Integer.parseInt(txtStok.getText().trim());
-            if (stok < 0) {
-                JOptionPane.showMessageDialog(this, "Stok tidak boleh negatif!", "Validasi", JOptionPane.WARNING_MESSAGE);
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Stok harus berupa angka!", "Validasi", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-        return true;
-    }
-    
-    // --- Logika Tambah Data ---
-    private void tambahBuku() {
-        if (!validateForm()) return;
-        Buku buku = new Buku();
-        buku.setIsbn(txtIsbn.getText().trim());
-        buku.setJudul(txtJudul.getText().trim());
-        buku.setStok(Integer.parseInt(txtStok.getText().trim()));
-        
-        try {
-            bukuModel.addBuku(buku);
-            JOptionPane.showMessageDialog(this, "Data berhasil disimpan!");
-            bersihkanForm();
-            loadData(); 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Gagal menyimpan: " + e.getMessage());
-        }
-    }
-    
-    // --- Logika Update Data ---
-    private void updateBuku() {
-        if (selectedIsbn == null) {
-            JOptionPane.showMessageDialog(this, "Pilih buku dari tabel dulu!", "Peringatan", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        if (!validateForm()) return;
-        Buku buku = new Buku();
-        buku.setIsbn(txtIsbn.getText().trim()); 
-        buku.setJudul(txtJudul.getText().trim()); 
-        buku.setStok(Integer.parseInt(txtStok.getText().trim())); 
-        
-        try {
-            bukuModel.updateBuku(buku);
-            JOptionPane.showMessageDialog(this, "Data berhasil diperbarui!");
-            bersihkanForm();
-            loadData();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Gagal update: " + e.getMessage());
-        }
-    }
-    
-    // --- Logika Hapus Data ---
-    private void hapusBuku() {
-        if (selectedIsbn == null) {
-            JOptionPane.showMessageDialog(this, "Pilih buku yang akan dihapus!", "Peringatan", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        int confirm = JOptionPane.showConfirmDialog(this, 
-            "Yakin ingin menghapus buku ISBN: " + selectedIsbn + "?", 
-            "Konfirmasi Hapus", JOptionPane.YES_NO_OPTION);
-        
-        if (confirm == JOptionPane.YES_OPTION) {
-            try {
-                bukuModel.deleteBuku(selectedIsbn);
-                JOptionPane.showMessageDialog(this, "Data berhasil dihapus!");
-                bersihkanForm();
-                loadData();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Gagal hapus: " + e.getMessage());
-            }
-        }
-    }
-    
-    // --- Logika Pencarian ---
-    private void cariBuku() {
-        String keyword = txtCari.getText().trim();
-        if (keyword.isEmpty()) { loadData(); return; }
-        
-        tableModel.setRowCount(0);
-        List<Buku> listBuku = bukuModel.getAllBuku();
-        for (Buku buku : listBuku) {
-            if (buku.getIsbn().toLowerCase().contains(keyword.toLowerCase()) ||
-                buku.getJudul().toLowerCase().contains(keyword.toLowerCase())) {
-                Object[] row = { buku.getIsbn(), buku.getJudul(), buku.getStok() };
-                tableModel.addRow(row);
-            }
-        }
-    }
-    
-    // --- Load Data ---
-    private void loadData() {
+    // ==========================================================
+    // BAGIAN PENTING MVC: GETTER & SETTER
+    // Biar Controller bisa akses komponen tanpa ngotak-ngatik UI
+    // ==========================================================
+
+    public JTextField getTxtIsbn() { return txtIsbn; }
+    public JTextField getTxtJudul() { return txtJudul; }
+    public JTextField getTxtStok() { return txtStok; }
+    public JTextField getTxtId() { return txtId; }
+    public JTextField getTxtCari() { return txtCari; }
+
+    public JButton getBtnSimpan() { return btnTambah; } // btnTambah kita mapping jadi Simpan
+    public JButton getBtnUpdate() { return btnUpdate; }
+    public JButton getBtnHapus() { return btnHapus; }
+    public JButton getBtnReset() { return btnBersih; }
+    public JButton getBtnCari() { return btnCari; }
+    public JButton getBtnRefresh() { return btnRefresh; }
+
+    public String getSelectedIsbn() { return selectedIsbn; }
+
+    // Method ini dipanggil Controller buat ngisi tabel
+    public void setTableData(List<Buku> list) {
         tableModel.setRowCount(0); 
-        List<Buku> listBuku = bukuModel.getAllBuku(); 
-        for (Buku buku : listBuku) {
+        for (Buku buku : list) {
+            // Sesuaikan urutan kolom dengan tabel di atas
             Object[] row = { buku.getIsbn(), buku.getJudul(), buku.getStok() };
             tableModel.addRow(row); 
         }
     }
     
-    private void bersihkanForm() {
+    // Method ini dipanggil Controller buat bersihin form
+    public void clearForm() {
         selectedIsbn = null;
-        txtIsbn.setText(""); txtJudul.setText(""); txtStok.setText(""); txtCari.setText("");
+        txtIsbn.setText(""); txtJudul.setText(""); txtStok.setText(""); txtId.setText(""); txtCari.setText("");
         txtIsbn.setEditable(true); 
-        txtIsbn.setBackground(Color.WHITE); // Balikin warna putih
+        txtIsbn.setBackground(Color.WHITE); 
         tableBuku.clearSelection();
     }
 

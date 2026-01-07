@@ -13,7 +13,7 @@ public class BukuModel {
     public List<Buku> getAllBuku() {
         List<Buku> listBuku = new ArrayList<>();
         String sql = "SELECT b.isbn, b.judul, b.stok, " +
-                "k.id_kategori, k.nama_kategori" +
+                "k.id_kategori, k.nama_kategori " +
                 "FROM buku b " +
                 "JOIN kategori_buku k ON b.id_kategori = k.id_kategori";
 

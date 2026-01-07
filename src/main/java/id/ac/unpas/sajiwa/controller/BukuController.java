@@ -121,16 +121,30 @@ public class BukuController {
     }
     
     private void cariBuku() {
-        // Method searchBuku mungkin belum ada di Model Murod
-        // Jadi kita filter manual atau pake getAllBuku dulu sementara
-        String keyword = view.getTxtCari().getText();
+        String keyword = view.getTxtCari().getText().toLowerCase();
         
-        // Kalau Murod gak punya searchBuku, kita pake logika filter di View aja atau load semua
-        // List<Buku> list = model.searchBuku(keyword); <--- INI ERROR KALAU GAK ADA
+        // Ambil semua data dari model
+        List<Buku> allBuku = model.getAllBuku();
         
-        // Alternatif sementara: Refresh aja (Nanti Murod suruh bikin search)
-        JOptionPane.showMessageDialog(view, "Fitur Cari belum diimplementasi di Model!");
-        refreshTable();
+        // Jika keyword kosong, tampilkan semua
+        if (keyword.isEmpty()) {
+            view.setTableData(allBuku);
+            return;
+        }
+        
+        // Filter manual (Client-side filtering)
+        List<Buku> filtered = allBuku.stream()
+                .filter(b -> b.getJudul().toLowerCase().contains(keyword) || 
+                             b.getIsbn().toLowerCase().contains(keyword) ||
+                             b.getNamaKategori().toLowerCase().contains(keyword))
+                .toList();
+        
+        // Update tabel
+        view.setTableData(filtered);
+        
+        if (filtered.isEmpty()) {
+            JOptionPane.showMessageDialog(view, "Data tidak ditemukan!");
+        }
     }
     
     private void resetForm() {

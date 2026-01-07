@@ -21,7 +21,7 @@ public class AnggotaPanel extends JPanel {
     // Komponen UI
     private JTextField txtNim, txtNama, txtCari;
     private JComboBox<String> cmbProdi, cmbStatus;
-    private JButton btnSimpan, btnUpdate, btnHapus, btnReset, btnCari;
+    private JButton btnSimpan, btnUpdate, btnHapus, btnReset, btnCari, btnExport;
     private JTable tableAnggota;
     private DefaultTableModel tableModel;
     
@@ -104,11 +104,13 @@ public class AnggotaPanel extends JPanel {
         btnUpdate = createStyledButton("✏️ Update", new Color(243, 156, 18), Color.WHITE);
         btnHapus = createStyledButton("🗑️ Hapus", new Color(231, 76, 60), Color.WHITE);
         btnReset = createStyledButton("🔄 Reset", new Color(52, 152, 219), Color.WHITE);
+        btnExport = createStyledButton("📄 Export PDF", new Color(142, 68, 173), Color.WHITE);
 
         panelButtons.add(btnSimpan);
         panelButtons.add(btnUpdate);
         panelButtons.add(btnHapus);
         panelButtons.add(btnReset);
+        panelButtons.add(btnExport);
 
         gbc.gridx = 0; gbc.gridy = 4;
         gbc.gridwidth = 2;
@@ -202,6 +204,7 @@ public class AnggotaPanel extends JPanel {
     public JButton getBtnSimpan() { return btnSimpan; }
     public JButton getBtnUpdate() { return btnUpdate; }
     public JButton getBtnHapus() { return btnHapus; }
+    public JButton getBtnExport() { return btnExport; }
     public JButton getBtnReset() { return btnReset; }
     public JButton getBtnCari() { return btnCari; }
     

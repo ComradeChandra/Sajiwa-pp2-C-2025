@@ -185,7 +185,10 @@ public class BukuPanel extends JPanel {
         panelTabel.add(panelCari, BorderLayout.NORTH);
         panelTabel.add(scrollPane, BorderLayout.CENTER);
 
-        panelCenter.add(panelForm, BorderLayout.NORTH);
+        // Logic Layout berdasarkan Role
+        if (isEditable) {
+            panelCenter.add(panelForm, BorderLayout.NORTH);
+        }
         panelCenter.add(panelTabel, BorderLayout.CENTER);
         add(panelCenter, BorderLayout.CENTER);
     }
@@ -252,3 +255,23 @@ public class BukuPanel extends JPanel {
         tableBuku.clearSelection();
     }
 }
+
+/*
+ * ==================================================================================
+ * CATATAN PRIBADI (CHANDRA)
+ * ==================================================================================
+ * 1. MVC Integration:
+ *    - Panel ini gak ngurusin query database langsung. Semua logic CRUD dilempar ke
+ *      'BukuController'. Panel cuma tugasnya nampilin data (View) dan nangkep input.
+ *
+ * 2. Role Responsiveness (Admin vs Mahasiswa):
+ *    - Ada boolean 'isEditable' di constructor.
+ *    - Kalau Admin login (isEditable=true) -> Form input & tombol CRUD muncul.
+ *    - Kalau Mahasiswa login (isEditable=false) -> Form input & tombol CRUD HILANG.
+ *      Mahasiswa cuma bisa liat tabel daftar buku & fitur search aja.
+ *
+ * 3. Search Logic:
+ *    - Pencarian live ada di Controller, tapi View nyediain fitur 'updateTabel()'
+ *      biar Controller bisa langsung inject data hasil filter ke JTable.
+ * ==================================================================================
+ */

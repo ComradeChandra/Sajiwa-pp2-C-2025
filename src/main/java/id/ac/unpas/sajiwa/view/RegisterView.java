@@ -12,10 +12,13 @@ public class RegisterView extends JFrame {
 
     // Komponen Public untuk Controller
     public JTextField txtUsername = new JTextField();
-    public JTextField txtProdi = new JTextField();
+    public JComboBox<String> txtProdi = new JComboBox<>(new String[]{
+        "Teknik Informatika", "Teknik Industri", "Teknologi Pangan", 
+        "Teknik Mesin", "Teknik Lingkungan", "Perencanaan Wilayah dan Kota"
+    });
     public JTextField txtNpm = new JTextField();
     public JPasswordField txtPassword = new JPasswordField();
-    public JTextField txtConfirmPassword = new JTextField();
+    public JPasswordField txtConfirmPassword = new JPasswordField();
     public JButton btnRegister = new JButton("REGISTER");
     public JButton btnBack = new JButton("KEMBALI");
 
@@ -88,7 +91,9 @@ public class RegisterView extends JFrame {
         mainPanel.add(lblProdi);
         currentY += labelHeight + spacing;
 
-        styleField(txtProdi);
+        // Note: txtProdi is JComboBox now
+        txtProdi.setBackground(Color.WHITE);
+        txtProdi.setBorder(BorderFactory.createLineBorder(new Color(180, 210, 255)));
         txtProdi.setBounds(inputX, currentY, inputWidth, fieldHeight);
         mainPanel.add(txtProdi);
         currentY += fieldHeight + nextGroup;
@@ -196,5 +201,8 @@ public class RegisterView extends JFrame {
  * * 4. UX:
  * Udah ditambahin hover effect di tombol login. Jadi pas mouse masuk, warnanya 
  * berubah biru terang sedikit biar kerasa "interaktif".
+ * * 5. Input Prodi:
+ * Menggunakan JComboBox agar input data standar (Informatika, Industri, dll) 
+ * dan user tidak perlu mengetik manual, jadi data prodi di database seragam.
  * ==================================================================================
  */

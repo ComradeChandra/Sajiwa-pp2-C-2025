@@ -32,7 +32,7 @@ public class MainFrame extends JFrame {
         // ==========================================================
         JPanel sidebar = new JPanel();
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
-        sidebar.setBackground(new Color(44, 62, 80)); // Warna Biru Gelap (Elegan)
+        sidebar.setBackground(new Color(25, 42, 86)); // Warna Navy (Sesuai request)
         sidebar.setPreferredSize(new Dimension(260, 0)); // Lebar Sidebar
         sidebar.setBorder(new EmptyBorder(30, 20, 30, 20)); // Jarak pinggir (Padding)
         
@@ -59,23 +59,27 @@ public class MainFrame extends JFrame {
         sidebar.add(Box.createRigidArea(new Dimension(0, 50))); // Jarak ke tombol menu
         
         // --- TOMBOL MENU ---
-        JButton btnBuku = createMenuButton("📚  Data Buku");
-        JButton btnAnggota = createMenuButton("👥  Data Anggota");
-        JButton btnLaporan = createMenuButton("📄  Laporan");
-        JButton btnLogout = createMenuButton("🚪  Logout");
+        // Warna Button Biru Muda, Teks Navy
+        Color btnColor = new Color(180, 210, 255);
+        Color txtColor = new Color(25, 42, 86);
+
+        JButton btnBuku = createMenuButton("📚  Data Buku", btnColor, txtColor);
+        JButton btnAnggota = createMenuButton("👥  Data Anggota", btnColor, txtColor);
+        JButton btnLaporan = createMenuButton("📄  Laporan", btnColor, txtColor);
+        JButton btnLogout = createMenuButton("🚪  Logout", new Color(231, 76, 60), Color.WHITE);
         
         // --- LOGIKA PINDAH HALAMAN (NAVIGATION) ---
         
-        // 1. Klik Menu Buku -> Tampilin Panel Fitri
+        // 1. Klik Menu Buku -> Tampilin BukuPanel
         btnBuku.addActionListener(e -> {
-            gantiHalaman(new BukuPanel()); // Panggil class BukuPanel punya Fitri
+            gantiHalaman(new BukuPanel()); 
         });
         
-        // 2. Klik Menu Anggota -> Sementara kasih info dulu (karena Murod blm beres)
+        // 2. Klik Menu Anggota -> Tampilin AnggotaPanel (SUDAH DIPERBAIKI)
         btnAnggota.addActionListener(e -> {
-            // Nanti kalau AnggotaPanel udah jadi, ganti baris ini:
-            // gantiHalaman(new AnggotaPanel()); 
-            JOptionPane.showMessageDialog(this, "Halaman Anggota sedang dikerjakan Murod! 🚧");
+            // Logic pesan "Sedang dikerjakan" sudah dihapus
+            // Sekarang langsung load panel anggota
+            gantiHalaman(new AnggotaPanel()); 
         });
         
         // 3. Klik Laporan
@@ -124,12 +128,12 @@ public class MainFrame extends JFrame {
         contentPanel.repaint(); // Gambar ulang
     }
     
-    // --- Method Helper: Buat Bikin Tombol Sidebar yg Ganteng ---
-    private JButton createMenuButton(String text) {
+    // --- Method Helper: Buat Bikin Tombol Sidebar (Updated Parameter) ---
+    private JButton createMenuButton(String text, Color bg, Color fg) {
         JButton btn = new JButton(text);
         btn.setMaximumSize(new Dimension(220, 50)); // Ukuran tombol
-        btn.setBackground(new Color(52, 73, 94)); // Warna dasar
-        btn.setForeground(Color.WHITE);
+        btn.setBackground(bg); // Warna dasar custom
+        btn.setForeground(fg); // Warna teks custom
         btn.setFont(new Font("SansSerif", Font.BOLD, 14));
         btn.setFocusPainted(false); // Ilangin garis fokus
         btn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // Padding teks
@@ -139,12 +143,47 @@ public class MainFrame extends JFrame {
         // Efek Hover (Warna berubah pas mouse lewat)
         btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn.setBackground(new Color(46, 204, 113)); // Jadi Hijau pas disorot
+                btn.setBackground(bg.darker()); // Jadi sedikit lebih gelap pas disorot
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn.setBackground(new Color(52, 73, 94)); // Balik ke warna asal
+                btn.setBackground(bg); // Balik ke warna asal
             }
         });
         return btn;
     }
+
+    public static void main(String[] args) {
+         try {
+            UIManager.setLookAndFeel(new com.formdev.flatlaf.FlatLightLaf());
+        } catch (Exception ex) {
+            System.err.println("Gagal load skin FlatLaf.");
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            new MainFrame().setVisible(true);
+        });
+    }
 }
+
+
+/*
+ * ==================================================================================
+ * CATATAN PENGEMBANG (DEV LOG) - TANGGAL: HARI INI
+ * ==================================================================================
+ * * 1. Integrasi AnggotaPanel:
+ * Tombol menu "Data Anggota" sekarang sudah aktif sepenuhnya. Kode placeholder 
+ * (JOptionPane) sudah saya hapus dan diganti dengan pemanggilan object 
+ * new AnggotaPanel(). Jadi pas diklik, tampilan di sebelah kanan otomatis berubah.
+ * * 2. Perihal Database:
+ * Pastikan tabel 'anggota' di database sudah dibuat sesuai struktur di model, 
+ * karena AnggotaPanel akan langsung request data begitu dibuka. Kalau XAMPP 
+ * belum nyala, kemungkinan bakal muncul error di console atau tabelnya kosong.
+ * * 3. Kosmetika UI:
+ * Warna sidebar sudah diubah ke Navy (25, 42, 86) dan tombol menu jadi Biru Muda 
+ * (180, 210, 255) sesuai permintaan terakhir biar senada sama panel lainnya.
+ * Efek hover tombol juga sudah disesuaikan biar warnanya gak tabrakan.
+ * * 4. Next Step:
+ * Tinggal lanjutin bagian "Laporan" yang masih kosong. Logic ganti halamannya 
+ * nanti sama persis, tinggal bikin class LaporanPanel baru.
+ * * ==================================================================================
+ */

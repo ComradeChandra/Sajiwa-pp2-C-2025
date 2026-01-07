@@ -26,7 +26,7 @@ import java.awt.Desktop;
  */
 public class ReportService {
 
-    // --- TEMPLATE JRXML UNTUK BUKU ---
+    // --- TEMPLATE JRXML UNTUK BUKU (BEAUTIFIED) ---
     private static final String REPORT_BUKU_XML = 
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
         "<jasperReport xmlns=\"http://jasperreports.sourceforge.net/jasperreports\" " +
@@ -42,35 +42,60 @@ public class ReportService {
         "    <field name=\"nama_kategori\" class=\"java.lang.String\"/>\n" +
         "    <background><band splitType=\"Stretch\"/></background>\n" +
         "    <title>\n" +
-        "        <band height=\"79\" splitType=\"Stretch\">\n" +
+        "        <band height=\"80\" splitType=\"Stretch\">\n" +
+        "            <rectangle>\n" +
+        "                <reportElement x=\"0\" y=\"0\" width=\"555\" height=\"80\" backcolor=\"#192A56\"/>\n" +
+        "                <graphicElement><pen lineWidth=\"0.0\"/></graphicElement>\n" +
+        "            </rectangle>\n" +
         "            <staticText>\n" +
-        "                <reportElement x=\"0\" y=\"0\" width=\"555\" height=\"79\" forecolor=\"#192A56\"/>\n" +
-        "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\">\n" +
-        "                    <font size=\"24\" isBold=\"true\"/>\n" +
-        "                </textElement>\n" +
-        "                <text><![CDATA[LAPORAN DATA BUKU SAJIWA]]></text>\n" +
+        "                <reportElement x=\"20\" y=\"10\" width=\"515\" height=\"40\" forecolor=\"#FFFFFF\"/>\n" +
+        "                <textElement verticalAlignment=\"Middle\"><font size=\"26\" isBold=\"true\"/></textElement>\n" +
+        "                <text><![CDATA[SAJIWA LIBRARY]]></text>\n" +
+        "            </staticText>\n" +
+        "            <staticText>\n" +
+        "                <reportElement x=\"20\" y=\"50\" width=\"515\" height=\"20\" forecolor=\"#BDC3C7\"/>\n" +
+        "                <textElement><font size=\"12\"/></textElement>\n" +
+        "                <text><![CDATA[Laporan Data Koleksi Buku Perpustakaan]]></text>\n" +
         "            </staticText>\n" +
         "        </band>\n" +
         "    </title>\n" +
         "    <columnHeader>\n" +
-        "        <band height=\"30\" splitType=\"Stretch\">\n" +
-        "            <staticText><reportElement x=\"0\" y=\"0\" width=\"100\" height=\"30\"/><box><bottomPen lineWidth=\"1.0\"/></box><textElement verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[ISBN]]></text></staticText>\n" +
-        "            <staticText><reportElement x=\"100\" y=\"0\" width=\"255\" height=\"30\"/><box><bottomPen lineWidth=\"1.0\"/></box><textElement verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Judul Buku]]></text></staticText>\n" +
-        "            <staticText><reportElement x=\"355\" y=\"0\" width=\"100\" height=\"30\"/><box><bottomPen lineWidth=\"1.0\"/></box><textElement verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Kategori]]></text></staticText>\n" +
-        "            <staticText><reportElement x=\"455\" y=\"0\" width=\"100\" height=\"30\"/><box><bottomPen lineWidth=\"1.0\"/></box><textElement verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Stok]]></text></staticText>\n" +
+        "        <band height=\"40\" splitType=\"Stretch\">\n" +
+        "            <rectangle>\n" +
+        "                <reportElement x=\"0\" y=\"0\" width=\"555\" height=\"40\" backcolor=\"#E3F2FD\"/>\n" +
+        "                <graphicElement><pen lineWidth=\"0.0\"/></graphicElement>\n" +
+        "            </rectangle>\n" +
+        "            <staticText><reportElement x=\"10\" y=\"0\" width=\"100\" height=\"40\"/><textElement verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[ISBN]]></text></staticText>\n" +
+        "            <staticText><reportElement x=\"110\" y=\"0\" width=\"245\" height=\"40\"/><textElement verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Judul Buku]]></text></staticText>\n" +
+        "            <staticText><reportElement x=\"355\" y=\"0\" width=\"120\" height=\"40\"/><textElement verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Kategori]]></text></staticText>\n" +
+        "            <staticText><reportElement x=\"475\" y=\"0\" width=\"80\" height=\"40\"/><textElement verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Stok]]></text></staticText>\n" +
         "        </band>\n" +
         "    </columnHeader>\n" +
         "    <detail>\n" +
-        "        <band height=\"20\" splitType=\"Stretch\">\n" +
-        "            <textField><reportElement x=\"0\" y=\"0\" width=\"100\" height=\"20\"/><textElement verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{isbn}]]></textFieldExpression></textField>\n" +
-        "            <textField><reportElement x=\"100\" y=\"0\" width=\"255\" height=\"20\"/><textElement verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{judul}]]></textFieldExpression></textField>\n" +
-        "            <textField><reportElement x=\"355\" y=\"0\" width=\"100\" height=\"20\"/><textElement verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{nama_kategori}]]></textFieldExpression></textField>\n" +
-        "            <textField><reportElement x=\"455\" y=\"0\" width=\"100\" height=\"20\"/><textElement verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{stok}]]></textFieldExpression></textField>\n" +
+        "        <band height=\"30\" splitType=\"Stretch\">\n" +
+        "            <textField><reportElement x=\"10\" y=\"0\" width=\"100\" height=\"30\"/><textElement verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{isbn}]]></textFieldExpression></textField>\n" +
+        "            <textField><reportElement x=\"110\" y=\"0\" width=\"245\" height=\"30\"/><textElement verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{judul}]]></textFieldExpression></textField>\n" +
+        "            <textField><reportElement x=\"355\" y=\"0\" width=\"120\" height=\"30\"/><textElement verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{nama_kategori}]]></textFieldExpression></textField>\n" +
+        "            <textField><reportElement x=\"475\" y=\"0\" width=\"80\" height=\"30\"/><textElement verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{stok}]]></textFieldExpression></textField>\n" +
+        "            <line><reportElement x=\"0\" y=\"29\" width=\"555\" height=\"1\" forecolor=\"#EEEEEE\"/> </line>\n" +
         "        </band>\n" +
         "    </detail>\n" +
+        "    <pageFooter>\n" +
+        "        <band height=\"50\">\n" +
+        "             <textField pattern=\"dd/MM/yyyy HH:mm\">\n" +
+        "                <reportElement x=\"0\" y=\"20\" width=\"200\" height=\"20\" forecolor=\"#95a5a6\"/>\n" +
+        "                <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>\n" +
+        "             </textField>\n" +
+        "             <textField>\n" +
+        "                <reportElement x=\"455\" y=\"20\" width=\"100\" height=\"20\" forecolor=\"#95a5a6\"/>\n" +
+        "                <textElement textAlignment=\"Right\"/>\n" +
+        "                <textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>\n" +
+        "             </textField>\n" +
+        "        </band>\n" +
+        "    </pageFooter>\n" +
         "</jasperReport>";
 
-    // --- TEMPLATE JRXML UNTUK ANGGOTA ---
+    // --- TEMPLATE JRXML UNTUK ANGGOTA (BEAUTIFIED) ---
     private static final String REPORT_ANGGOTA_XML = 
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
         "<jasperReport xmlns=\"http://jasperreports.sourceforge.net/jasperreports\" " +
@@ -87,35 +112,60 @@ public class ReportService {
         "    <field name=\"status_anggota\" class=\"java.lang.String\"/>\n" +
         "    <background><band splitType=\"Stretch\"/></background>\n" +
         "    <title>\n" +
-        "        <band height=\"79\" splitType=\"Stretch\">\n" +
+        "        <band height=\"80\" splitType=\"Stretch\">\n" +
+        "            <rectangle>\n" +
+        "                <reportElement x=\"0\" y=\"0\" width=\"555\" height=\"80\" backcolor=\"#273C75\"/>\n" +
+        "                <graphicElement><pen lineWidth=\"0.0\"/></graphicElement>\n" +
+        "            </rectangle>\n" +
         "            <staticText>\n" +
-        "                <reportElement x=\"0\" y=\"0\" width=\"555\" height=\"79\" forecolor=\"#273C75\"/>\n" +
-        "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\">\n" +
-        "                    <font size=\"24\" isBold=\"true\"/>\n" +
-        "                </textElement>\n" +
-        "                <text><![CDATA[LAPORAN ANGGOTA PERPUSTAKAAN]]></text>\n" +
+        "                <reportElement x=\"20\" y=\"10\" width=\"515\" height=\"40\" forecolor=\"#FFFFFF\"/>\n" +
+        "                <textElement verticalAlignment=\"Middle\"><font size=\"26\" isBold=\"true\"/></textElement>\n" +
+        "                <text><![CDATA[SAJIWA LIBRARY]]></text>\n" +
+        "            </staticText>\n" +
+        "            <staticText>\n" +
+        "                <reportElement x=\"20\" y=\"50\" width=\"515\" height=\"20\" forecolor=\"#BDC3C7\"/>\n" +
+        "                <textElement><font size=\"12\"/></textElement>\n" +
+        "                <text><![CDATA[Laporan Data Keanggotaan Mahasiswa]]></text>\n" +
         "            </staticText>\n" +
         "        </band>\n" +
         "    </title>\n" +
         "    <columnHeader>\n" +
-        "        <band height=\"30\" splitType=\"Stretch\">\n" +
-        "            <staticText><reportElement x=\"0\" y=\"0\" width=\"80\" height=\"30\"/><box><bottomPen lineWidth=\"1.0\"/></box><textElement verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[NIM]]></text></staticText>\n" +
-        "            <staticText><reportElement x=\"80\" y=\"0\" width=\"175\" height=\"30\"/><box><bottomPen lineWidth=\"1.0\"/></box><textElement verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Nama Mahasiswa]]></text></staticText>\n" +
-        "            <staticText><reportElement x=\"255\" y=\"0\" width=\"150\" height=\"30\"/><box><bottomPen lineWidth=\"1.0\"/></box><textElement verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Prodi]]></text></staticText>\n" +
-        "            <staticText><reportElement x=\"405\" y=\"0\" width=\"100\" height=\"30\"/><box><bottomPen lineWidth=\"1.0\"/></box><textElement verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Status]]></text></staticText>\n" +
+        "        <band height=\"40\" splitType=\"Stretch\">\n" +
+        "            <rectangle>\n" +
+        "                <reportElement x=\"0\" y=\"0\" width=\"555\" height=\"40\" backcolor=\"#D1C4E9\"/>\n" +
+        "                <graphicElement><pen lineWidth=\"0.0\"/></graphicElement>\n" +
+        "            </rectangle>\n" +
+        "            <staticText><reportElement x=\"10\" y=\"0\" width=\"90\" height=\"40\"/><textElement verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[NIM]]></text></staticText>\n" +
+        "            <staticText><reportElement x=\"100\" y=\"0\" width=\"180\" height=\"40\"/><textElement verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Nama Mahasiswa]]></text></staticText>\n" +
+        "            <staticText><reportElement x=\"280\" y=\"0\" width=\"150\" height=\"40\"/><textElement verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Prodi]]></text></staticText>\n" +
+        "            <staticText><reportElement x=\"430\" y=\"0\" width=\"100\" height=\"40\"/><textElement verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Status]]></text></staticText>\n" +
         "        </band>\n" +
         "    </columnHeader>\n" +
         "    <detail>\n" +
-        "        <band height=\"20\" splitType=\"Stretch\">\n" +
-        "            <textField><reportElement x=\"0\" y=\"0\" width=\"80\" height=\"20\"/><textElement verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{nim}]]></textFieldExpression></textField>\n" +
-        "            <textField><reportElement x=\"80\" y=\"0\" width=\"175\" height=\"20\"/><textElement verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{nama_mahasiswa}]]></textFieldExpression></textField>\n" +
-        "            <textField><reportElement x=\"255\" y=\"0\" width=\"150\" height=\"20\"/><textElement verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{program_studi}]]></textFieldExpression></textField>\n" +
-        "            <textField><reportElement x=\"405\" y=\"0\" width=\"100\" height=\"20\"/><textElement verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{status_anggota}]]></textFieldExpression></textField>\n" +
+        "        <band height=\"30\" splitType=\"Stretch\">\n" +
+        "            <textField><reportElement x=\"10\" y=\"0\" width=\"90\" height=\"30\"/><textElement verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{nim}]]></textFieldExpression></textField>\n" +
+        "            <textField><reportElement x=\"100\" y=\"0\" width=\"180\" height=\"30\"/><textElement verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{nama_mahasiswa}]]></textFieldExpression></textField>\n" +
+        "            <textField><reportElement x=\"280\" y=\"0\" width=\"150\" height=\"30\"/><textElement verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{program_studi}]]></textFieldExpression></textField>\n" +
+        "            <textField><reportElement x=\"430\" y=\"0\" width=\"100\" height=\"30\"/><textElement verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{status_anggota}]]></textFieldExpression></textField>\n" +
+        "            <line><reportElement x=\"0\" y=\"29\" width=\"555\" height=\"1\" forecolor=\"#EEEEEE\"/> </line>\n" +
         "        </band>\n" +
         "    </detail>\n" +
+        "    <pageFooter>\n" +
+        "        <band height=\"50\">\n" +
+        "             <textField pattern=\"dd/MM/yyyy HH:mm\">\n" +
+        "                <reportElement x=\"0\" y=\"20\" width=\"200\" height=\"20\" forecolor=\"#95a5a6\"/>\n" +
+        "                <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>\n" +
+        "             </textField>\n" +
+        "             <textField>\n" +
+        "                <reportElement x=\"455\" y=\"20\" width=\"100\" height=\"20\" forecolor=\"#95a5a6\"/>\n" +
+        "                <textElement textAlignment=\"Right\"/>\n" +
+        "                <textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>\n" +
+        "             </textField>\n" +
+        "        </band>\n" +
+        "    </pageFooter>\n" +
         "</jasperReport>";
 
-    // --- TEMPLATE JRXML UNTUK KATEGORI ---
+    // --- TEMPLATE JRXML UNTUK KATEGORI (BEAUTIFIED) ---
     private static final String REPORT_KATEGORI_XML = 
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
         "<jasperReport xmlns=\"http://jasperreports.sourceforge.net/jasperreports\" " +
@@ -128,28 +178,53 @@ public class ReportService {
         "    <field name=\"id_kategori\" class=\"java.lang.Integer\"/>\n" +
         "    <field name=\"nama_kategori\" class=\"java.lang.String\"/>\n" +
         "    <title>\n" +
-        "        <band height=\"79\" splitType=\"Stretch\">\n" +
+        "        <band height=\"80\" splitType=\"Stretch\">\n" +
+        "            <rectangle>\n" +
+        "                <reportElement x=\"0\" y=\"0\" width=\"555\" height=\"80\" backcolor=\"#F1C40F\"/>\n" +
+        "                <graphicElement><pen lineWidth=\"0.0\"/></graphicElement>\n" +
+        "            </rectangle>\n" +
         "            <staticText>\n" +
-        "                <reportElement x=\"0\" y=\"0\" width=\"555\" height=\"79\" forecolor=\"#e1b12c\"/>\n" +
-        "                <textElement textAlignment=\"Center\" verticalAlignment=\"Middle\">\n" +
-        "                    <font size=\"24\" isBold=\"true\"/>\n" +
-        "                </textElement>\n" +
-        "                <text><![CDATA[LAPORAN KATEGORI BUKU]]></text>\n" +
+        "                <reportElement x=\"20\" y=\"10\" width=\"515\" height=\"40\" forecolor=\"#2C3E50\"/>\n" +
+        "                <textElement verticalAlignment=\"Middle\"><font size=\"26\" isBold=\"true\"/></textElement>\n" +
+        "                <text><![CDATA[SAJIWA LIBRARY]]></text>\n" +
+        "            </staticText>\n" +
+        "            <staticText>\n" +
+        "                <reportElement x=\"20\" y=\"50\" width=\"515\" height=\"20\" forecolor=\"#2C3E50\"/>\n" +
+        "                <textElement><font size=\"12\"/></textElement>\n" +
+        "                <text><![CDATA[Laporan Kategori Buku]]></text>\n" +
         "            </staticText>\n" +
         "        </band>\n" +
         "    </title>\n" +
         "    <columnHeader>\n" +
-        "        <band height=\"30\">\n" +
-        "            <staticText><reportElement x=\"0\" y=\"0\" width=\"100\" height=\"30\"/><box><bottomPen lineWidth=\"1.0\"/></box><textElement verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[ID Kategori]]></text></staticText>\n" +
-        "            <staticText><reportElement x=\"100\" y=\"0\" width=\"455\" height=\"30\"/><box><bottomPen lineWidth=\"1.0\"/></box><textElement verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Nama Kategori]]></text></staticText>\n" +
+        "        <band height=\"40\">\n" +
+        "            <rectangle>\n" +
+        "                <reportElement x=\"0\" y=\"0\" width=\"555\" height=\"40\" backcolor=\"#FFF9C4\"/>\n" +
+        "                <graphicElement><pen lineWidth=\"0.0\"/></graphicElement>\n" +
+        "            </rectangle>\n" +
+        "            <staticText><reportElement x=\"10\" y=\"0\" width=\"100\" height=\"40\"/><textElement verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[ID Kategori]]></text></staticText>\n" +
+        "            <staticText><reportElement x=\"110\" y=\"0\" width=\"445\" height=\"40\"/><textElement verticalAlignment=\"Middle\"><font isBold=\"true\"/></textElement><text><![CDATA[Nama Kategori]]></text></staticText>\n" +
         "        </band>\n" +
         "    </columnHeader>\n" +
         "    <detail>\n" +
-        "        <band height=\"20\">\n" +
-        "            <textField><reportElement x=\"0\" y=\"0\" width=\"100\" height=\"20\"/><textElement verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{id_kategori}]]></textFieldExpression></textField>\n" +
-        "            <textField><reportElement x=\"100\" y=\"0\" width=\"455\" height=\"20\"/><textElement verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{nama_kategori}]]></textFieldExpression></textField>\n" +
+        "        <band height=\"30\">\n" +
+        "            <textField><reportElement x=\"10\" y=\"0\" width=\"100\" height=\"30\"/><textElement verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{id_kategori}]]></textFieldExpression></textField>\n" +
+        "            <textField><reportElement x=\"110\" y=\"0\" width=\"445\" height=\"30\"/><textElement verticalAlignment=\"Middle\"/><textFieldExpression><![CDATA[$F{nama_kategori}]]></textFieldExpression></textField>\n" +
+         "            <line><reportElement x=\"0\" y=\"29\" width=\"555\" height=\"1\" forecolor=\"#EEEEEE\"/> </line>\n" +
         "        </band>\n" +
         "    </detail>\n" +
+        "    <pageFooter>\n" +
+         "        <band height=\"50\">\n" +
+        "             <textField pattern=\"dd/MM/yyyy HH:mm\">\n" +
+        "                <reportElement x=\"0\" y=\"20\" width=\"200\" height=\"20\" forecolor=\"#95a5a6\"/>\n" +
+        "                <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>\n" +
+        "             </textField>\n" +
+        "             <textField>\n" +
+        "                <reportElement x=\"455\" y=\"20\" width=\"100\" height=\"20\" forecolor=\"#95a5a6\"/>\n" +
+        "                <textElement textAlignment=\"Right\"/>\n" +
+        "                <textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>\n" +
+        "             </textField>\n" +
+        "        </band>\n" +
+        "    </pageFooter>\n" +
         "</jasperReport>";
 
     public void cetakLaporanBuku() {

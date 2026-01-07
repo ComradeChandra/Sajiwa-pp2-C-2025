@@ -21,11 +21,28 @@ public class BukuPanel extends JPanel {
     
     // State
     private String selectedIsbn = null;
+    private boolean isEditable = true; // Default true (Admin)
 
     public BukuPanel() {
+        this(true); // Constructor tanpa argumen = editable
+    }
+
+    public BukuPanel(boolean isEditable) {
+        this.isEditable = isEditable;
         initComponents();
         // [PENTING] Integrasi MVC: Controller menangani logika
         new BukuController(this);
+        
+        // Atur aksesibilitas berdasarkan role
+        if (!isEditable) {
+            btnTambah.setVisible(false);
+            btnUpdate.setVisible(false);
+            btnHapus.setVisible(false);
+            btnBersih.setVisible(false);
+            // Non-editable jangan tampilkan form input juga supaya lebih bersih?
+            // Atau cukup disable button saja
+            // Untuk saat ini disable button saja cukup
+        }
     }
 
     private void initComponents() {

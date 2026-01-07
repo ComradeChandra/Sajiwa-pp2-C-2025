@@ -4,6 +4,7 @@
  */
 package id.ac.unpas.sajiwa.controller;
 import id.ac.unpas.sajiwa.view.RegisterView;
+import id.ac.unpas.sajiwa.view.LoginView;
 
 /**
  *
@@ -15,6 +16,14 @@ public class RegisterController {
     
     public RegisterController(RegisterView view) {
         this.view = view;
+        
+        // Listener Tombol Kembali
+        view.btnBack.addActionListener(e -> {
+            LoginView loginView = new LoginView();
+            new LoginController(loginView); // Pasang controller
+            loginView.setVisible(true);
+            view.dispose();
+        });
     }
     
 }

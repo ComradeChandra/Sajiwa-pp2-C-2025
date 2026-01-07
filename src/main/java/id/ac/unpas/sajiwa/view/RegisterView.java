@@ -17,6 +17,7 @@ public class RegisterView extends JFrame {
     public JPasswordField txtPassword = new JPasswordField();
     public JTextField txtConfirmPassword = new JTextField();
     public JButton btnRegister = new JButton("REGISTER");
+    public JButton btnBack = new JButton("KEMBALI");
 
     public RegisterView() {
         initComponents();
@@ -130,6 +131,25 @@ public class RegisterView extends JFrame {
             }
         });
         mainPanel.add(btnRegister);
+
+        // --- BUTTON BACK (KEMBALI) ---
+        currentY += 45 + 10; // Geser ke bawah tombol register
+        btnBack.setBounds(inputX, currentY, inputWidth, 45);
+        btnBack.setBackground(new Color(149, 165, 166)); // Warna abu-abu
+        btnBack.setForeground(Color.WHITE);
+        btnBack.setFont(new Font("SansSerif", Font.BOLD, 15));
+        btnBack.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnBack.setFocusPainted(false);
+        // Hover effect simple
+        btnBack.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnBack.setBackground(new Color(127, 140, 141));
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnBack.setBackground(new Color(149, 165, 166));
+            }
+        });
+        mainPanel.add(btnBack);
 
         // Footer
         JLabel lblFooter = new JLabel("© 2024 Sajiwa Team Project", SwingConstants.CENTER);

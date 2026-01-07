@@ -12,16 +12,22 @@ public class MainFrame extends JFrame {
     
     // Panel khusus buat gonta-ganti isi halaman (Buku/Anggota/dll)
     private JPanel contentPanel; 
+    private String userRole; // Nambahin Role User
 
     public MainFrame() {
+        this("admin"); // Default Admin kalau dipanggil tanpa parameter
+    }
+
+    public MainFrame(String role) {
+        this.userRole = role;
         initComponents();
     }
 
     private void initComponents() {
         // 1. Setup Jendela Utama
-        setTitle("Sajiwa Library System v1.0");
+        setTitle("Sajiwa Library System v1.0 - " + userRole.toUpperCase());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1200, 750); // Ukuran default pas dibuka
+        setSize(1200, 750); // Ukuran default pas opened
         setLocationRelativeTo(null); // Biar muncul di tengah layar
         
         // Kita pake layout BorderLayout (Barat, Timur, Tengah, dll)
@@ -62,7 +68,8 @@ public class MainFrame extends JFrame {
         // Warna Button Biru Muda, Teks Navy
         Color btnColor = new Color(180, 210, 255);
         Color txtColor = new Color(25, 42, 86);
-
+        
+        JButton btnDashboard = createMenuButton("🏠  Dashboard", btnColor, txtColor);
         JButton btnBuku = createMenuButton("📚  Data Buku", btnColor, txtColor);
         JButton btnAnggota = createMenuButton("👥  Data Anggota", btnColor, txtColor);
         JButton btnKategori = createMenuButton("🏷️  Kategori Buku", btnColor, txtColor);
@@ -72,9 +79,13 @@ public class MainFrame extends JFrame {
         
         // --- LOGIKA PINDAH HALAMAN (NAVIGATION) ---
         
+        // 0. Dashboard
+        btnDashboard.addActionListener(e -> gantiHalaman(new DashboardPanel()));
+
         // 1. Klik Menu Buku -> Tampilin BukuPanel
         btnBuku.addActionListener(e -> {
-            gantiHalaman(new BukuPanel()); 
+            boolean isEditable = userRole.equalsIgnoreCase("admin") || userRole.equalsIgnoreCase("petugas");
+            gantiHalaman(new BukuPanel(isEditable)); 
         });
         
         // 2. Klik Menu Anggota -> Tampilin AnggotaPanel (SUDAH DIPERBAIKI)
@@ -102,18 +113,31 @@ public class MainFrame extends JFrame {
         btnLogout.addActionListener(e -> {
             int confirm = JOptionPane.showConfirmDialog(this, "Yakin mau keluar?", "Logout", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
-                System.exit(0);
+                new LoginView().setVisible(true); // Balik ke Login
+                dispose();
             }
         });
         
-        // Masukin tombol ke sidebar
+        // Masukin tombol ke sidebar sesuai ROLE
+        sidebar.add(btnDashboard);
+        sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
+        
         sidebar.add(btnBuku);
         sidebar.add(Box.createRigidArea(new Dimension(0, 10))); // Spasi antar tombol
-        sidebar.add(btnAnggota);
-        sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
-        sidebar.add(btnKategori);
-        sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
-        sidebar.add(btnLaporan);
+        
+        if (userRole.equalsIgnoreCase("admin") || userRole.equalsIgnoreCase("petugas")) {
+            // Admin/Petugas bisa lihat semua
+            sidebar.add(btnAnggota);
+            sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
+            sidebar.add(btnKategori);
+            sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
+            sidebar.add(btnTransaksi);
+            sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
+            sidebar.add(btnLaporan);
+        } else {
+            // User Biasa (Mahasiswa) cuma bisa Dashboard & Buku (Read Only logic nanti di Panel)
+            // Tombol lain tidak ditampilkan
+        }
         
         // Tombol Logout ditaruh paling bawah (pake Glue)
         sidebar.add(Box.createVerticalGlue()); 
@@ -125,8 +149,8 @@ public class MainFrame extends JFrame {
         contentPanel = new JPanel(new BorderLayout());
         contentPanel.setBackground(Color.WHITE);
         
-        // DEFAULT VIEW: Pas pertama aplikasi dibuka, langsung munculin BukuPanel
-        contentPanel.add(new BukuPanel(), BorderLayout.CENTER);
+        // DEFAULT VIEW: DashboardPanel
+        contentPanel.add(new DashboardPanel(), BorderLayout.CENTER);
 
         // Gabungin Sidebar & Content ke Frame Utama
         add(sidebar, BorderLayout.WEST);

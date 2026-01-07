@@ -46,7 +46,8 @@ public class LoginController {
                 ResultSet rs = ps.executeQuery();
 
                 if (rs.next()) {
-                    loginSukses(); // Pindah ke Dashboard
+                    String role = rs.getString("role");
+                    loginSukses(role); // Pindah ke Dashboard bawa Role
                 } else {
                     JOptionPane.showMessageDialog(view, "Username / Password salah (Cek Database)");
                 }
@@ -66,15 +67,17 @@ public class LoginController {
     private void checkHardcode(String user, String pass) {
         if (user.equals("admin") && pass.equals("123")) {
             JOptionPane.showMessageDialog(view, "Login Mode Offline Berhasil!");
-            loginSukses();
+            loginSukses("admin");
+        } else if (user.equals("user") && pass.equals("123")) {
+             loginSukses("user");
         } else {
             JOptionPane.showMessageDialog(view, "Login Gagal! (DB Error & Password Salah)");
         }
     }
 
-    private void loginSukses() {
-        JOptionPane.showMessageDialog(view, "Login Berhasil! Selamat Datang.");
-        new MainFrame().setVisible(true); // BUKA DASHBOARD
+    private void loginSukses(String role) {
+        JOptionPane.showMessageDialog(view, "Login Berhasil! Selamat Datang, " + role + ".");
+        new MainFrame(role).setVisible(true); // BUKA DASHBOARD dengan ROLE
         view.dispose(); // TUTUP LOGIN
     }
 }

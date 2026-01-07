@@ -1,4 +1,5 @@
 package id.ac.unpas.sajiwa.controller;
+        
 
 import id.ac.unpas.sajiwa.view.LoginView;
 import id.ac.unpas.sajiwa.view.MainFrame; // Import Dashboard Murod/Fitri
@@ -14,6 +15,7 @@ public class LoginController {
         this.view = view;
         // Controller yang "dengerin" kalau tombol diklik
         view.btnLogin.addActionListener(e -> login());
+
     }
 
     private void login() {
@@ -27,9 +29,9 @@ public class LoginController {
 
         try {
             Connection conn = KoneksiDB.getConnection();
-            
+
             // Cek apakah tabel user_login ada? Kalau DB mati/tabel gak ada, lari ke Catch
-            if(conn != null) {
+            if (conn != null) {
                 String sql = "SELECT * FROM user_login WHERE username=? AND password=?";
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ps.setString(1, username);
@@ -52,12 +54,12 @@ public class LoginController {
             checkHardcode(username, password);
         }
     }
-    
+
     // Logika cadangan kalau Database belum siap
     private void checkHardcode(String user, String pass) {
-        if(user.equals("admin") && pass.equals("123")) {
-             JOptionPane.showMessageDialog(view, "Login Mode Offline Berhasil!");
-             loginSukses();
+        if (user.equals("admin") && pass.equals("123")) {
+            JOptionPane.showMessageDialog(view, "Login Mode Offline Berhasil!");
+            loginSukses();
         } else {
             JOptionPane.showMessageDialog(view, "Login Gagal! (DB Error & Password Salah)");
         }

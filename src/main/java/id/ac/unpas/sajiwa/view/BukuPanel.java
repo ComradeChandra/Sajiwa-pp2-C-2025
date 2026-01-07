@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class BukuPanel extends JPanel {
     // Komponen UI
-    private JTextField txtIsbn, txtJudul, txtStok, txtCari;
+    private JTextField txtIsbn, txtJudul, txtStok, txtCari, txtId;
     private JTable tableBuku;
     private DefaultTableModel tableModel;
     private BukuModel bukuModel;
@@ -80,6 +80,13 @@ public class BukuPanel extends JPanel {
         txtStok = new JTextField(20);
         panelForm.add(txtStok, gbc);
         
+        // Id Kategori
+        gbc.gridx = 0; gbc.gridy = 3;
+        panelForm.add(new JLabel("Id Kategori :"), gbc);
+        gbc.gridx = 1;
+        txtId = new JTextField(20);
+        panelForm.add(txtId, gbc);
+        
         // 2. Panel Tombol Aksi (Warna-Warni)
         JPanel panelButtons = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         panelButtons.setOpaque(false);
@@ -101,7 +108,7 @@ public class BukuPanel extends JPanel {
         panelButtons.add(btnBersih);
         
         // Masukin tombol ke GridForm paling bawah
-        gbc.gridx = 0; gbc.gridy = 3;
+        gbc.gridx = 0; gbc.gridy = 4;
         gbc.gridwidth = 2;
         panelForm.add(panelButtons, gbc);
         

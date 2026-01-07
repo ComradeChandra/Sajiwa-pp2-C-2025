@@ -20,10 +20,7 @@ public class KategoriBukuModel {
     public void addKategori(KategoriBuku kategori) {
         validateKategori(kategori);
 
-        String sql = "SELECT * FROM kategori_buku\n" +
-                "INSERT INTO kategori_buku (nama_kategori) VALUES (?)\n" +
-                "UPDATE kategori_buku SET nama_kategori = ? WHERE id_kategori = ?\n" +
-                "DELETE FROM kategori_buku WHERE id_kategori = ?\n  ";
+        String sql = "INSERT INTO kategori_buku (nama_kategori) VALUES (?)";
 
         try (Connection conn = KoneksiDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {

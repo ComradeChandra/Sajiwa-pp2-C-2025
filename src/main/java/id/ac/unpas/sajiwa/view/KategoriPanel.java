@@ -1,7 +1,7 @@
 package id.ac.unpas.sajiwa.view;
 
+import id.ac.unpas.sajiwa.controller.KategoriBukuController;
 import id.ac.unpas.sajiwa.model.KategoriBuku;
-import id.ac.unpas.sajiwa.model.KategoriBukuModel;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -11,17 +11,17 @@ import java.util.List;
 public class KategoriPanel extends JPanel {
     // Komponen UI
     private JTextField txtId, txtNamaKategori, txtCari;
+    private JButton btnSimpan, btnUpdate, btnHapus, btnReset, btnCari;
     private JTable tableKategori;
     private DefaultTableModel tableModel;
     
-    // Model & Data Helper
-    private KategoriBukuModel modelHelper;
+    // State UI
     private int selectedId = -1;
 
     public KategoriPanel() {
-        modelHelper = new KategoriBukuModel();
         initComponents();
-        loadData();
+        // Integrasi MVC
+        new KategoriBukuController(this);
     }
 
     private void initComponents() {
@@ -60,6 +60,7 @@ public class KategoriPanel extends JPanel {
         gbc.gridx = 1;
         txtId = new JTextField(5);
         styleField(txtId);
+        txtId.setEditable(false); // ID Auto Increment
         panelForm.add(txtId, gbc);
 
         // Nama Kategori
@@ -74,15 +75,10 @@ public class KategoriPanel extends JPanel {
         JPanel panelButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelButtons.setOpaque(false);
 
-        JButton btnSimpan = createStyledButton("💾 Simpan", new Color(46, 204, 113), Color.WHITE);
-        JButton btnUpdate = createStyledButton("✏️ Update", new Color(243, 156, 18), Color.WHITE);
-        JButton btnHapus = createStyledButton("🗑️ Hapus", new Color(231, 76, 60), Color.WHITE);
-        JButton btnReset = createStyledButton("🔄 Reset", new Color(52, 152, 219), Color.WHITE);
-
-        btnSimpan.addActionListener(e -> simpanData());
-        btnUpdate.addActionListener(e -> updateData());
-        btnHapus.addActionListener(e -> hapusData());
-        btnReset.addActionListener(e -> resetForm());
+        btnSimpan = createStyledButton("💾 Simpan", new Color(46, 204, 113), Color.WHITE);
+        btnUpdate = createStyledButton("✏️ Update", new Color(243, 156, 18), Color.WHITE);
+        btnHapus = createStyledButton("🗑️ Hapus", new Color(231, 76, 60), Color.WHITE);
+        btnReset = createStyledButton("🔄 Reset", new Color(52, 152, 219), Color.WHITE);
 
         panelButtons.add(btnSimpan);
         panelButtons.add(btnUpdate);
@@ -106,7 +102,7 @@ public class KategoriPanel extends JPanel {
         panelCari.setOpaque(false);
         txtCari = new JTextField(20);
         txtCari.putClientProperty("JTextField.placeholderText", "Cari Kategori...");
-        JButton btnCari = createStyledButton("🔍 Cari", new Color(52, 73, 94), Color.WHITE);
+        btnCari = createStyledButton("🔍 Cari", new Color(52, 73, 94), Color.WHITE);
         panelCari.add(txtCari);
         panelCari.add(btnCari);
 
@@ -122,7 +118,7 @@ public class KategoriPanel extends JPanel {
         tableKategori.setSelectionForeground(Color.BLACK);
         tableKategori.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 13));
         
-        // Kita tampilkan kolom ID di tabel kategori karena data master kategori biasanya ringkas
+        // Kita tampilkan kolom ID
         tableKategori.getColumnModel().getColumn(0).setPreferredWidth(50);
         tableKategori.getColumnModel().getColumn(0).setMaxWidth(100);
 
@@ -169,48 +165,26 @@ public class KategoriPanel extends JPanel {
         return btn;
     }
 
-    // --- Logika ---
-    private void loadData() {
+    // --- Getters for Controller ---
+    public JTextField getTxtNamaKategori() { return txtNamaKategori; }
+    public JTextField getTxtCari() { return txtCari; }
+    
+    public JButton getBtnSimpan() { return btnSimpan; }
+    public JButton getBtnUpdate() { return btnUpdate; }
+    public JButton getBtnHapus() { return btnHapus; }
+    public JButton getBtnReset() { return btnReset; }
+    public JButton getBtnCari() { return btnCari; }
+    
+    public int getSelectedId() { return selectedId; }
+
+    public void setTableData(List<KategoriBuku> list) {
         tableModel.setRowCount(0);
-        List<KategoriBuku> list = modelHelper.getAllKategori();
         for(KategoriBuku k : list) {
             tableModel.addRow(new Object[]{k.getIdKategori(), k.getNamaKategori()});
         }
     }
 
-    private void simpanData() {
-        if(txtNamaKategori.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Nama Kategori wajib diisi!");
-            return;
-        }
-        modelHelper.addKategori(new KategoriBuku(0, txtNamaKategori.getText().trim()));
-        resetForm();
-        loadData();
-        JOptionPane.showMessageDialog(this, "Kategori Berhasil Disimpan!");
-    }
-
-    private void updateData() {
-        if(selectedId == -1) {
-            JOptionPane.showMessageDialog(this, "Pilih data yang ingin diubah!");
-            return;
-        }
-        modelHelper.updateKategori(new KategoriBuku(selectedId, txtNamaKategori.getText().trim()));
-        resetForm();
-        loadData();
-        JOptionPane.showMessageDialog(this, "Kategori Berhasil Diperbarui!");
-    }
-
-    private void hapusData() {
-        if(selectedId == -1) return;
-        int kf = JOptionPane.showConfirmDialog(this, "Hapus kategori " + txtNamaKategori.getText() + "?", "Hapus", JOptionPane.YES_NO_OPTION);
-        if(kf == JOptionPane.YES_OPTION) {
-            modelHelper.deleteKategori(selectedId);
-            resetForm();
-            loadData();
-        }
-    }
-
-    private void resetForm() {
+    public void resetForm() {
         selectedId = -1;
         txtId.setText("Auto");
         txtNamaKategori.setText("");

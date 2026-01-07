@@ -125,4 +125,10 @@ public class AnggotaController {
         
         view.setTableData(filteredData);
     }
+    
+    /* CATATAN PRIBADI (CHANDRA):
+       1. Refactoring: Memindahkan semua logika CRUD yang tadinya di AnggotaPanel ke sini agar View bersih.
+       2. Validasi: Validasi input tetap di controller sebelum kirim ke model.
+       3. Search: Sementara pakai filtering stream di sisi Java, nanti kalau data banyak bisa dipindah ke query "LIKE" di SQL.
+    */
 }

@@ -12,6 +12,7 @@ public class LoginView extends JFrame {
     public JTextField txtUsername = new JTextField();
     public JPasswordField txtPassword = new JPasswordField();
     public JButton btnLogin = new JButton("LOGIN");
+    public JButton btnRegister = new JButton("REGISTER");
 
 
     public LoginView() {
@@ -20,7 +21,7 @@ public class LoginView extends JFrame {
 
     private void initComponents() {
         setTitle("Sajiwa Library - Login");
-        setSize(400, 500);
+        setSize(400, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -99,6 +100,14 @@ public class LoginView extends JFrame {
         btnLogin.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnLogin.setFocusPainted(false);
         
+        // --- BUTTON REGISTER ---
+        btnRegister.setBounds(inputX, 440, inputWidth, 45);
+        btnRegister.setBackground(new Color(25, 42, 86)); // Navy
+        btnRegister.setForeground(Color.WHITE);
+        btnRegister.setFont(new Font("SansSerif", Font.BOLD, 15));
+        btnRegister.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnRegister.setFocusPainted(false);
+        
         // Efek Hover Tombol
         btnLogin.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -109,13 +118,22 @@ public class LoginView extends JFrame {
             }
         });
         
+        btnRegister.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnRegister.setBackground(new Color(41, 128, 185));
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnRegister.setBackground(new Color(25, 42, 86));
+            }
+        });
         mainPanel.add(btnLogin);
+        mainPanel.add(btnRegister);
 
         // Footer teks
         JLabel lblFooter = new JLabel("© 2024 Sajiwa Team Project", SwingConstants.CENTER);
         lblFooter.setFont(new Font("SansSerif", Font.ITALIC, 10));
         lblFooter.setForeground(Color.GRAY);
-        lblFooter.setBounds(0, 430, 400, 20);
+        lblFooter.setBounds(0, 520, 400, 20);
         mainPanel.add(lblFooter);
     }
 }

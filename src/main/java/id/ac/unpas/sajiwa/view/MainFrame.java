@@ -66,6 +66,7 @@ public class MainFrame extends JFrame {
         JButton btnBuku = createMenuButton("📚  Data Buku", btnColor, txtColor);
         JButton btnAnggota = createMenuButton("👥  Data Anggota", btnColor, txtColor);
         JButton btnKategori = createMenuButton("🏷️  Kategori Buku", btnColor, txtColor);
+        JButton btnTransaksi = createMenuButton("🔄  Transaksi", btnColor, txtColor);
         JButton btnLaporan = createMenuButton("📄  Laporan", btnColor, txtColor);
         JButton btnLogout = createMenuButton("🚪  Logout", new Color(231, 76, 60), Color.WHITE);
         
@@ -85,6 +86,10 @@ public class MainFrame extends JFrame {
         
         btnKategori.addActionListener(e -> {
             gantiHalaman(new KategoriPanel());
+        });
+        
+        btnTransaksi.addActionListener(e -> {
+            gantiHalaman(new PeminjamanPanel());
         });
         
         // 3. Klik Laporan

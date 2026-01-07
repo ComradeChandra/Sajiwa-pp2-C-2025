@@ -6,6 +6,7 @@ import id.ac.unpas.sajiwa.view.AnggotaPanel;
 import id.ac.unpas.sajiwa.database.KoneksiDB;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.view.JasperViewer;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -134,6 +135,7 @@ public class AnggotaController {
                 .toList();
         
         view.setTableData(filteredData);
+    }
 
     private void exportPdf() {
         try {

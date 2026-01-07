@@ -15,17 +15,34 @@ import java.util.List;
 public class BukuPanel extends JPanel {
     // Komponen UI
     private JTextField txtIsbn, txtJudul, txtStok, txtIdKategori, txtCari;
-    private JButton btnTambah, btnUpdate, btnHapus, btnBersih, btnCari, btnRefresh;
+    private JButton btnTambah, btnUpdate, btnHapus, btnBersih, btnCari, btnRefresh, btnCetak;
     private JTable tableBuku;
     private DefaultTableModel tableModel;
     
     // State
     private String selectedIsbn = null;
+    private boolean isEditable = true; // Default true (Admin)
 
     public BukuPanel() {
+        this(true); // Constructor tanpa argumen = editable
+    }
+
+    public BukuPanel(boolean isEditable) {
+        this.isEditable = isEditable;
         initComponents();
         // [PENTING] Integrasi MVC: Controller menangani logika
         new BukuController(this);
+        
+        // Atur aksesibilitas berdasarkan role
+        if (!isEditable) {
+            btnTambah.setVisible(false);
+            btnUpdate.setVisible(false);
+            btnHapus.setVisible(false);
+            btnBersih.setVisible(false);
+            // Non-editable jangan tampilkan form input juga supaya lebih bersih?
+            // Atau cukup disable button saja
+            // Untuk saat ini disable button saja cukup
+        }
     }
 
     private void initComponents() {
@@ -97,11 +114,15 @@ public class BukuPanel extends JPanel {
         btnUpdate = createStyledButton("✏️ Update", new Color(243, 156, 18), Color.WHITE);
         btnHapus = createStyledButton("🗑️ Hapus", new Color(231, 76, 60), Color.WHITE);
         btnBersih = createStyledButton("🔄 Reset", new Color(52, 152, 219), Color.WHITE);
+        btnCetak = createStyledButton("📄 Cetak PDF", new Color(155, 89, 182), Color.WHITE);
+
+        btnCetak.addActionListener(e -> new id.ac.unpas.sajiwa.util.ReportService().cetakLaporanBuku());
         
         panelButtons.add(btnTambah);
         panelButtons.add(btnUpdate);
         panelButtons.add(btnHapus);
         panelButtons.add(btnBersih);
+        panelButtons.add(btnCetak);
 
         gbc.gridx = 0; gbc.gridy = 4;
         gbc.gridwidth = 2;
@@ -164,7 +185,10 @@ public class BukuPanel extends JPanel {
         panelTabel.add(panelCari, BorderLayout.NORTH);
         panelTabel.add(scrollPane, BorderLayout.CENTER);
 
-        panelCenter.add(panelForm, BorderLayout.NORTH);
+        // Logic Layout berdasarkan Role
+        if (isEditable) {
+            panelCenter.add(panelForm, BorderLayout.NORTH);
+        }
         panelCenter.add(panelTabel, BorderLayout.CENTER);
         add(panelCenter, BorderLayout.CENTER);
     }
@@ -231,3 +255,23 @@ public class BukuPanel extends JPanel {
         tableBuku.clearSelection();
     }
 }
+
+/*
+ * ==================================================================================
+ * CATATAN PRIBADI (CHANDRA)
+ * ==================================================================================
+ * 1. MVC Integration:
+ *    - Panel ini gak ngurusin query database langsung. Semua logic CRUD dilempar ke
+ *      'BukuController'. Panel cuma tugasnya nampilin data (View) dan nangkep input.
+ *
+ * 2. Role Responsiveness (Admin vs Mahasiswa):
+ *    - Ada boolean 'isEditable' di constructor.
+ *    - Kalau Admin login (isEditable=true) -> Form input & tombol CRUD muncul.
+ *    - Kalau Mahasiswa login (isEditable=false) -> Form input & tombol CRUD HILANG.
+ *      Mahasiswa cuma bisa liat tabel daftar buku & fitur search aja.
+ *
+ * 3. Search Logic:
+ *    - Pencarian live ada di Controller, tapi View nyediain fitur 'updateTabel()'
+ *      biar Controller bisa langsung inject data hasil filter ke JTable.
+ * ==================================================================================
+ */

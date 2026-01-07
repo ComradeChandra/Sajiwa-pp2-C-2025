@@ -12,11 +12,15 @@ public class RegisterView extends JFrame {
 
     // Komponen Public untuk Controller
     public JTextField txtUsername = new JTextField();
-    public JTextField txtProdi = new JTextField();
+    public JComboBox<String> txtProdi = new JComboBox<>(new String[]{
+        "Teknik Informatika", "Teknik Industri", "Teknologi Pangan", 
+        "Teknik Mesin", "Teknik Lingkungan", "Perencanaan Wilayah dan Kota"
+    });
     public JTextField txtNpm = new JTextField();
     public JPasswordField txtPassword = new JPasswordField();
-    public JTextField txtConfirmPassword = new JTextField();
+    public JPasswordField txtConfirmPassword = new JPasswordField();
     public JButton btnRegister = new JButton("REGISTER");
+    public JButton btnBack = new JButton("KEMBALI");
 
     public RegisterView() {
         initComponents();
@@ -87,7 +91,9 @@ public class RegisterView extends JFrame {
         mainPanel.add(lblProdi);
         currentY += labelHeight + spacing;
 
-        styleField(txtProdi);
+        // Note: txtProdi is JComboBox now
+        txtProdi.setBackground(Color.WHITE);
+        txtProdi.setBorder(BorderFactory.createLineBorder(new Color(180, 210, 255)));
         txtProdi.setBounds(inputX, currentY, inputWidth, fieldHeight);
         mainPanel.add(txtProdi);
         currentY += fieldHeight + nextGroup;
@@ -131,6 +137,25 @@ public class RegisterView extends JFrame {
         });
         mainPanel.add(btnRegister);
 
+        // --- BUTTON BACK (KEMBALI) ---
+        currentY += 45 + 10; // Geser ke bawah tombol register
+        btnBack.setBounds(inputX, currentY, inputWidth, 45);
+        btnBack.setBackground(new Color(149, 165, 166)); // Warna abu-abu
+        btnBack.setForeground(Color.WHITE);
+        btnBack.setFont(new Font("SansSerif", Font.BOLD, 15));
+        btnBack.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnBack.setFocusPainted(false);
+        // Hover effect simple
+        btnBack.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnBack.setBackground(new Color(127, 140, 141));
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnBack.setBackground(new Color(149, 165, 166));
+            }
+        });
+        mainPanel.add(btnBack);
+
         // Footer
         JLabel lblFooter = new JLabel("© 2024 Sajiwa Team Project", SwingConstants.CENTER);
         lblFooter.setFont(new Font("SansSerif", Font.ITALIC, 10));
@@ -159,7 +184,7 @@ public class RegisterView extends JFrame {
 
 /*
  * ==================================================================================
- * CATATAN PENGEMBANG (DEV LOG)
+ * CATATAN PRIBADI (CHANDRA)
  * ==================================================================================
  * 1. Desain Konsisten:
  * Warna sengaja disamakan dengan MainFrame (Navy & Biru Muda) supaya user nggak 
@@ -176,5 +201,8 @@ public class RegisterView extends JFrame {
  * * 4. UX:
  * Udah ditambahin hover effect di tombol login. Jadi pas mouse masuk, warnanya 
  * berubah biru terang sedikit biar kerasa "interaktif".
+ * * 5. Input Prodi:
+ * Menggunakan JComboBox agar input data standar (Informatika, Industri, dll) 
+ * dan user tidak perlu mengetik manual, jadi data prodi di database seragam.
  * ==================================================================================
  */

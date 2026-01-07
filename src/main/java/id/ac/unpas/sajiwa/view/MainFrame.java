@@ -12,16 +12,28 @@ public class MainFrame extends JFrame {
     
     // Panel khusus buat gonta-ganti isi halaman (Buku/Anggota/dll)
     private JPanel contentPanel; 
+    private String userRole; // Nambahin Role User
+    private String username; // Username Login
 
     public MainFrame() {
+        this("admin", "Administrator"); // Default Admin
+    }
+
+    public MainFrame(String role) {
+        this(role, "User");
+    }
+
+    public MainFrame(String role, String username) {
+        this.userRole = role;
+        this.username = username;
         initComponents();
     }
 
     private void initComponents() {
         // 1. Setup Jendela Utama
-        setTitle("Sajiwa Library System v1.0");
+        setTitle("Sajiwa Library System v1.0 - " + userRole.toUpperCase() + " (" + username + ")");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1200, 750); // Ukuran default pas dibuka
+        setSize(1200, 750); // Ukuran default pas opened
         setLocationRelativeTo(null); // Biar muncul di tengah layar
         
         // Kita pake layout BorderLayout (Barat, Timur, Tengah, dll)
@@ -62,19 +74,29 @@ public class MainFrame extends JFrame {
         // Warna Button Biru Muda, Teks Navy
         Color btnColor = new Color(180, 210, 255);
         Color txtColor = new Color(25, 42, 86);
-
+        
+        JButton btnDashboard = createMenuButton("🏠  Dashboard", btnColor, txtColor);
         JButton btnBuku = createMenuButton("📚  Data Buku", btnColor, txtColor);
         JButton btnAnggota = createMenuButton("👥  Data Anggota", btnColor, txtColor);
         JButton btnKategori = createMenuButton("🏷️  Kategori Buku", btnColor, txtColor);
         JButton btnTransaksi = createMenuButton("🔄  Transaksi", btnColor, txtColor);
         JButton btnLaporan = createMenuButton("📄  Laporan", btnColor, txtColor);
+        
+        // Tombol Khusus Mahasiswa
+        JButton btnHistori = createMenuButton("📜  Riwayat Saya", btnColor, txtColor);
+        JButton btnPinjam = createMenuButton("📖  Sedang Dipinjam", btnColor, txtColor);
+
         JButton btnLogout = createMenuButton("🚪  Logout", new Color(231, 76, 60), Color.WHITE);
         
         // --- LOGIKA PINDAH HALAMAN (NAVIGATION) ---
         
+        // 0. Dashboard
+        btnDashboard.addActionListener(e -> gantiHalaman(new DashboardPanel()));
+
         // 1. Klik Menu Buku -> Tampilin BukuPanel
         btnBuku.addActionListener(e -> {
-            gantiHalaman(new BukuPanel()); 
+            boolean isEditable = userRole.equalsIgnoreCase("admin") || userRole.equalsIgnoreCase("petugas");
+            gantiHalaman(new BukuPanel(isEditable)); 
         });
         
         // 2. Klik Menu Anggota -> Tampilin AnggotaPanel (SUDAH DIPERBAIKI)
@@ -94,25 +116,45 @@ public class MainFrame extends JFrame {
         
         // 3. Klik Laporan
         btnLaporan.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Fitur Laporan Coming Soon!");
+            // Panggil Service Reporting untuk mencetak semua laporan jadi satu PDF
+            new id.ac.unpas.sajiwa.util.ReportService().cetakLaporanGabungan();
         });
+        
+        // 4. Menu Mahasiswa
+        btnHistori.addActionListener(e -> gantiHalaman(new UserHistoryPanel(username, false)));
+        btnPinjam.addActionListener(e -> gantiHalaman(new UserHistoryPanel(username, true)));
 
-        // 4. Klik Logout
+        // 5. Klik Logout
         btnLogout.addActionListener(e -> {
             int confirm = JOptionPane.showConfirmDialog(this, "Yakin mau keluar?", "Logout", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
-                System.exit(0);
+                new LoginView().setVisible(true); // Balik ke Login
+                dispose();
             }
         });
         
-        // Masukin tombol ke sidebar
-        sidebar.add(btnBuku);
-        sidebar.add(Box.createRigidArea(new Dimension(0, 10))); // Spasi antar tombol
-        sidebar.add(btnAnggota);
-        sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
-        sidebar.add(btnKategori);
-        sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
-        sidebar.add(btnLaporan);
+        // Masukin tombol ke sidebar sesuai ROLE
+        if (userRole.equalsIgnoreCase("admin") || userRole.equalsIgnoreCase("petugas")) {
+            sidebar.add(btnDashboard);
+            sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
+            sidebar.add(btnBuku);
+            sidebar.add(Box.createRigidArea(new Dimension(0, 10))); // Spasi antar tombol
+            sidebar.add(btnAnggota);
+            sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
+            sidebar.add(btnKategori);
+            sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
+            sidebar.add(btnTransaksi);
+            sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
+            sidebar.add(btnLaporan);
+        } else {
+            // User Biasa (Mahasiswa)
+            sidebar.add(btnBuku); // Read Only
+            sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
+            sidebar.add(btnHistori);
+            sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
+            sidebar.add(btnPinjam);
+            // Dashboard disembunyikan
+        }
         
         // Tombol Logout ditaruh paling bawah (pake Glue)
         sidebar.add(Box.createVerticalGlue()); 
@@ -124,8 +166,13 @@ public class MainFrame extends JFrame {
         contentPanel = new JPanel(new BorderLayout());
         contentPanel.setBackground(Color.WHITE);
         
-        // DEFAULT VIEW: Pas pertama aplikasi dibuka, langsung munculin BukuPanel
-        contentPanel.add(new BukuPanel(), BorderLayout.CENTER);
+        // DEFAULT VIEW
+        if (userRole.equalsIgnoreCase("admin") || userRole.equalsIgnoreCase("petugas")) {
+            contentPanel.add(new DashboardPanel(), BorderLayout.CENTER);
+        } else {
+             // Default page Mahasiswa langsung ke Buku
+            contentPanel.add(new BukuPanel(false), BorderLayout.CENTER);
+        }
 
         // Gabungin Sidebar & Content ke Frame Utama
         add(sidebar, BorderLayout.WEST);
@@ -197,8 +244,18 @@ public class MainFrame extends JFrame {
  *    - Menghubungkan semua modul (Buku, Anggota, Kategori, Transaksi) ke satu navigasi pusat.
  *    - Tombol "Data Anggota" & "Transaksi" sekarang sudah aktif memanggil Panel masing-masing.
  *
- * * 4. Next Step:
- * Tinggal lanjutin bagian "Laporan" yang masih kosong. Logic ganti halamannya 
- * nanti sama persis, tinggal bikin class LaporanPanel baru.
- * * ==================================================================================
+ * 4. Security (Role Access):
+ *    - Constructor MainFrame sekarang menerima parameter 'role' DAN 'username'.
+ *    - Logic UI Adaptif:
+ *      a. ADMIN/PETUGAS: Tampil Full Menu (Dashboard, CRUD Buku/Anggota, Laporan).
+ *      b. MAHASISWA: Dashboard & CRUD disembunyikan. Cuma bisa akses:
+ *         - Daftar Buku (Read Only)
+ *         - Riwayat Peminjaman Saya (UserHistoryPanel)
+ *         - Buku Sedang Dipinjam
+ *    - Ini memastikan mahasiswa gak bisa ngacak-ngacak data perpustakaan.
+ *
+ * 5. Update Terakhir:
+ *    - Udah nambahin fitur Dashboard sebagai tampilan default.
+ *    - udah nambahin fitur Laporan (PDF) di tombol paling bawah.
+ * 
  */

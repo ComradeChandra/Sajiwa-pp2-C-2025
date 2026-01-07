@@ -46,7 +46,8 @@ public class LoginController {
                 ResultSet rs = ps.executeQuery();
 
                 if (rs.next()) {
-                    loginSukses(); // Pindah ke Dashboard
+                    String role = rs.getString("role");
+                    loginSukses(role, username); // Pindah ke Dashboard bawa Role & Username
                 } else {
                     JOptionPane.showMessageDialog(view, "Username / Password salah (Cek Database)");
                 }
@@ -66,15 +67,36 @@ public class LoginController {
     private void checkHardcode(String user, String pass) {
         if (user.equals("admin") && pass.equals("123")) {
             JOptionPane.showMessageDialog(view, "Login Mode Offline Berhasil!");
-            loginSukses();
+            loginSukses("admin", user);
+        } else if (user.equals("user") && pass.equals("123")) {
+             loginSukses("user", user);
         } else {
             JOptionPane.showMessageDialog(view, "Login Gagal! (DB Error & Password Salah)");
         }
     }
 
-    private void loginSukses() {
-        JOptionPane.showMessageDialog(view, "Login Berhasil! Selamat Datang.");
-        new MainFrame().setVisible(true); // BUKA DASHBOARD
+    private void loginSukses(String role, String username) {
+        JOptionPane.showMessageDialog(view, "Login Berhasil! Selamat Datang, " + username + ".");
+        new MainFrame(role, username).setVisible(true); // BUKA DASHBOARD dengan ROLE & USERNAME
         view.dispose(); // TUTUP LOGIN
     }
 }
+
+/*
+ * ==================================================================================
+ * CATATAN PRIBADI (CHANDRA)
+ * ==================================================================================
+ * 1. Role-Based Access Control (RBAC):
+ *    - Logic utama keamanan aplikasi ada di sini.
+ *    - Setelah query SELECT user ketemu, saya ambil kolom 'role'-nya.
+ *    - Nilai role ini ('admin' atau 'user') DIOPER ke constructor MainFrame.
+ *    - Jadi MainFrame "tahu" siapa yang lagi login, dan bisa nyembunyiin tombol 
+ *      yang gak berhak diakses.
+ * 
+ * 2. Fallback Mechanism (Fitur Anti Panik):
+ *    - Ada method 'checkHardcode' di exception catch block.
+ *    - Ini fitur rahasia: Kalau pas demo tiba-tiba XAMPP mati atau error koneksi,
+ *      kita tetep bisa login pake user "admin" pass "123".
+ *    - Biar pas presentasi gak awkward kalau ada masalah teknis :D
+ * ==================================================================================
+ */

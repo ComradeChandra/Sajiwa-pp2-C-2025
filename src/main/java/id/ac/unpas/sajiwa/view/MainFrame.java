@@ -65,6 +65,7 @@ public class MainFrame extends JFrame {
 
         JButton btnBuku = createMenuButton("📚  Data Buku", btnColor, txtColor);
         JButton btnAnggota = createMenuButton("👥  Data Anggota", btnColor, txtColor);
+        JButton btnKategori = createMenuButton("🏷️  Kategori Buku", btnColor, txtColor);
         JButton btnLaporan = createMenuButton("📄  Laporan", btnColor, txtColor);
         JButton btnLogout = createMenuButton("🚪  Logout", new Color(231, 76, 60), Color.WHITE);
         
@@ -80,6 +81,10 @@ public class MainFrame extends JFrame {
             // Logic pesan "Sedang dikerjakan" sudah dihapus
             // Sekarang langsung load panel anggota
             gantiHalaman(new AnggotaPanel()); 
+        });
+        
+        btnKategori.addActionListener(e -> {
+            gantiHalaman(new KategoriPanel());
         });
         
         // 3. Klik Laporan
@@ -99,6 +104,8 @@ public class MainFrame extends JFrame {
         sidebar.add(btnBuku);
         sidebar.add(Box.createRigidArea(new Dimension(0, 10))); // Spasi antar tombol
         sidebar.add(btnAnggota);
+        sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
+        sidebar.add(btnKategori);
         sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
         sidebar.add(btnLaporan);
         

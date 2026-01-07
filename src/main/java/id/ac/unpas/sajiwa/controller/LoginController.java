@@ -81,3 +81,22 @@ public class LoginController {
         view.dispose(); // TUTUP LOGIN
     }
 }
+
+/*
+ * ==================================================================================
+ * CATATAN PRIBADI (CHANDRA)
+ * ==================================================================================
+ * 1. Role-Based Access Control (RBAC):
+ *    - Logic utama keamanan aplikasi ada di sini.
+ *    - Setelah query SELECT user ketemu, saya ambil kolom 'role'-nya.
+ *    - Nilai role ini ('admin' atau 'user') DIOPER ke constructor MainFrame.
+ *    - Jadi MainFrame "tahu" siapa yang lagi login, dan bisa nyembunyiin tombol 
+ *      yang gak berhak diakses.
+ * 
+ * 2. Fallback Mechanism (Fitur Anti Panik):
+ *    - Ada method 'checkHardcode' di exception catch block.
+ *    - Ini fitur rahasia: Kalau pas demo tiba-tiba XAMPP mati atau error koneksi,
+ *      kita tetep bisa login pake user "admin" pass "123".
+ *    - Biar pas presentasi gak awkward kalau ada masalah teknis :D
+ * ==================================================================================
+ */

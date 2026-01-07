@@ -222,8 +222,13 @@ public class MainFrame extends JFrame {
  *    - Menghubungkan semua modul (Buku, Anggota, Kategori, Transaksi) ke satu navigasi pusat.
  *    - Tombol "Data Anggota" & "Transaksi" sekarang sudah aktif memanggil Panel masing-masing.
  *
- * * 4. Next Step:
- * Tinggal lanjutin bagian "Laporan" yang masih kosong. Logic ganti halamannya 
- * nanti sama persis, tinggal bikin class LaporanPanel baru.
- * * ==================================================================================
+ * 4. Security (Role Access):
+ *    - Constructor MainFrame sekarang menerima parameter 'role'.
+ *    - Kalau role == 'user', tombol-tombol manajemen (CRUD) di-hide pakai if-else 
+ *      sederhana. User cuma bisa liat Dashboard & Cari Buku.
+ * 
+ * 5. Update Terakhir:
+ *    - Udah nambahin fitur Dashboard sebagai tampilan default.
+ *    - Udah nambahin fitur Laporan (PDF) di tombol paling bawah.
+ * ==================================================================================
  */

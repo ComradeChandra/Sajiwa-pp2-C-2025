@@ -308,3 +308,26 @@ public class ReportService {
         }
     }
 }
+
+/*
+ * ==================================================================================
+ * CATATAN PRIBADI (CHANDRA)
+ * ==================================================================================
+ * 1. JasperReports tanpa file .jasper eksternal:
+ *    - Biasanya Jasper perlu file .jasper/.jrxml di folder project.
+ *    - Tapi di sini saya bereksperimen dengan menaruh kode XML-nya LANGSUNG di string Java 
+ *      (Hardcoded XML).
+ *    - ALASANNYA: Biar pas di-build jadi .jar atau dipindah komputer lain, kita gak 
+ *      perlu repot bawa-bawa file .jasper nya. Aplikasinya jadi mandiri (portable).
+ * 
+ * 2. Teknik Kompilasi Runtime:
+ *    - String XML tadi di-convert jadi InputStream -> diload -> dikompilasi (compileReport) 
+ *      secara on-the-fly saat tombol diklik.
+ *    - Memang sedikit lebih lambat sepersekian detik dibanding load file jadi, tapi 
+ *      lebih fleksibel buat tubes ini.
+ * 
+ * 3. Desain Laporan:
+ *    - Saya pakai ColumnHeader, Detail, PageFooter standar.
+ *    - Warna & Layout ditulis manual via tag XML (agak rumit sih, tapi puas hasilnya).
+ * ==================================================================================
+ */

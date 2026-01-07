@@ -99,3 +99,24 @@ public class DashboardPanel extends JPanel {
         return card;
     }
 }
+
+/*
+ * ==================================================================================
+ * CATATAN PRIBADI (CHANDRA)
+ * ==================================================================================
+ * 1. Logic Dashboard:
+ *    - Panel ini adalah tampilan pertama (Home) setelah user login.
+ *    - Menggunakan GridLayout(1, 4) untuk menyusun kartu statistik secara horizontal.
+ * 
+ * 2. Real-time Data:
+ *    - Data angka (jumlah buku, anggota, dll) TIDAK DI-HARDCODE.
+ *    - Data diambil via 'StatsModel' yang menjalankan query SELECT COUNT(*) ke DB.
+ *    - Jadi kalau ada buku baru ditambah, angka di sini otomatis berubah pas refresh 
+ *      (atau pas aplikasi dibuka ulang).
+ * 
+ * 3. UI/UX:
+ *    - Setiap kartu (StatsCard) dibikin class sendiri biar kodenya rapi dan bisa 
+ *      dipakai ulang.
+ *    - Menggunakan warna gradient dan icon emoji simpel untuk estetika.
+ * ==================================================================================
+ */

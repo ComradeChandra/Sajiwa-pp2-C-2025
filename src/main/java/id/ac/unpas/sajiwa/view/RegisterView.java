@@ -179,7 +179,7 @@ public class RegisterView extends JFrame {
 
 /*
  * ==================================================================================
- * CATATAN PENGEMBANG (DEV LOG)
+ * CATATAN PRIBADI (CHANDRA)
  * ==================================================================================
  * 1. Desain Konsisten:
  * Warna sengaja disamakan dengan MainFrame (Navy & Biru Muda) supaya user nggak 

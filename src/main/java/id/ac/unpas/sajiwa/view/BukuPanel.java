@@ -15,7 +15,7 @@ import java.util.List;
 public class BukuPanel extends JPanel {
     // Komponen UI
     private JTextField txtIsbn, txtJudul, txtStok, txtIdKategori, txtCari;
-    private JButton btnTambah, btnUpdate, btnHapus, btnBersih, btnCari, btnRefresh;
+    private JButton btnTambah, btnUpdate, btnHapus, btnBersih, btnCari, btnRefresh, btnCetak;
     private JTable tableBuku;
     private DefaultTableModel tableModel;
     
@@ -97,11 +97,15 @@ public class BukuPanel extends JPanel {
         btnUpdate = createStyledButton("✏️ Update", new Color(243, 156, 18), Color.WHITE);
         btnHapus = createStyledButton("🗑️ Hapus", new Color(231, 76, 60), Color.WHITE);
         btnBersih = createStyledButton("🔄 Reset", new Color(52, 152, 219), Color.WHITE);
+        btnCetak = createStyledButton("📄 Cetak PDF", new Color(155, 89, 182), Color.WHITE);
+
+        btnCetak.addActionListener(e -> new id.ac.unpas.sajiwa.util.ReportService().cetakLaporanBuku());
         
         panelButtons.add(btnTambah);
         panelButtons.add(btnUpdate);
         panelButtons.add(btnHapus);
         panelButtons.add(btnBersih);
+        panelButtons.add(btnCetak);
 
         gbc.gridx = 0; gbc.gridy = 4;
         gbc.gridwidth = 2;

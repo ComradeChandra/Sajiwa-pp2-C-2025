@@ -11,7 +11,7 @@ import java.util.List;
 public class KategoriPanel extends JPanel {
     // Komponen UI
     private JTextField txtId, txtNamaKategori, txtCari;
-    private JButton btnSimpan, btnUpdate, btnHapus, btnReset, btnCari;
+    private JButton btnSimpan, btnUpdate, btnHapus, btnReset, btnCari, btnCetak;
     private JTable tableKategori;
     private DefaultTableModel tableModel;
     
@@ -79,11 +79,15 @@ public class KategoriPanel extends JPanel {
         btnUpdate = createStyledButton("✏️ Update", new Color(243, 156, 18), Color.WHITE);
         btnHapus = createStyledButton("🗑️ Hapus", new Color(231, 76, 60), Color.WHITE);
         btnReset = createStyledButton("🔄 Reset", new Color(52, 152, 219), Color.WHITE);
+        btnCetak = createStyledButton("📄 Cetak PDF", new Color(155, 89, 182), Color.WHITE);
+
+        btnCetak.addActionListener(e -> new id.ac.unpas.sajiwa.util.ReportService().cetakLaporanKategori());
 
         panelButtons.add(btnSimpan);
         panelButtons.add(btnUpdate);
         panelButtons.add(btnHapus);
         panelButtons.add(btnReset);
+        panelButtons.add(btnCetak);
 
         gbc.gridx = 0; gbc.gridy = 2;
         gbc.gridwidth = 2;

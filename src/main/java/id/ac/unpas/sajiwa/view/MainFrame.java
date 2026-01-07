@@ -94,7 +94,8 @@ public class MainFrame extends JFrame {
         
         // 3. Klik Laporan
         btnLaporan.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Fitur Laporan Coming Soon!");
+            // Panggil Service Reporting untuk mencetak semua laporan jadi satu PDF
+            new id.ac.unpas.sajiwa.util.ReportService().cetakLaporanGabungan();
         });
 
         // 4. Klik Logout

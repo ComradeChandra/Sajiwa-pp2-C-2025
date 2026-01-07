@@ -106,6 +106,11 @@ public class AnggotaPanel extends JPanel {
         btnReset = createStyledButton("🔄 Reset", new Color(52, 152, 219), Color.WHITE);
         btnExport = createStyledButton("📄 Export PDF", new Color(142, 68, 173), Color.WHITE);
 
+        // [TAMBAHAN] Fitur Cetak PDF
+        btnExport.addActionListener(e -> {
+            new id.ac.unpas.sajiwa.util.ReportService().cetakLaporanAnggota();
+        });
+
         panelButtons.add(btnSimpan);
         panelButtons.add(btnUpdate);
         panelButtons.add(btnHapus);

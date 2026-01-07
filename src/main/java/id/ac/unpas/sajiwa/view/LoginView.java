@@ -13,6 +13,7 @@ public class LoginView extends JFrame {
     public JPasswordField txtPassword = new JPasswordField();
     public JButton btnLogin = new JButton("LOGIN");
 
+
     public LoginView() {
         initComponents();
     }
@@ -107,6 +108,7 @@ public class LoginView extends JFrame {
                 btnLogin.setBackground(new Color(25, 42, 86));
             }
         });
+        
         mainPanel.add(btnLogin);
 
         // Footer teks

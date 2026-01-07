@@ -196,7 +196,7 @@ public class MainFrame extends JFrame {
  * 3. Integrasi Modules:
  *    - Menghubungkan semua modul (Buku, Anggota, Kategori, Transaksi) ke satu navigasi pusat.
  *    - Tombol "Data Anggota" & "Transaksi" sekarang sudah aktif memanggil Panel masing-masing.
- */
+ *
  * * 4. Next Step:
  * Tinggal lanjutin bagian "Laporan" yang masih kosong. Logic ganti halamannya 
  * nanti sama persis, tinggal bikin class LaporanPanel baru.

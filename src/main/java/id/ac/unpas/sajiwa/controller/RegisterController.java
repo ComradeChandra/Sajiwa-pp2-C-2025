@@ -3,12 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package id.ac.unpas.sajiwa.controller;
-import id.ac.unpas.sajiwa.view.LoginView;
 import id.ac.unpas.sajiwa.view.RegisterView;
-import id.ac.unpas.sajiwa.view.MainFrame; // Import Dashboard Murod/Fitri
-import id.ac.unpas.sajiwa.database.KoneksiDB;
-import javax.swing.*;
-import java.sql.*;
 
 /**
  *

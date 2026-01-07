@@ -235,7 +235,6 @@ public class AnggotaController {
             JOptionPane.showMessageDialog(view, "Gagal Mencetak Laporan: " + e.getMessage());
         }
     }
-    }
     
     /* CATATAN PRIBADI (CHANDRA):
        1. Refactoring: Memindahkan semua logika CRUD yang tadinya di AnggotaPanel ke sini agar View bersih.

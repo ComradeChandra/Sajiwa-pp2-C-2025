@@ -18,6 +18,7 @@ public class PeminjamanPanel extends JPanel {
     private DefaultTableModel tableModel;
     
     // Controller
+    @SuppressWarnings("unused")
     private PeminjamanController controller;
 
     public PeminjamanPanel() {

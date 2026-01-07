@@ -253,11 +253,9 @@ public class MainFrame extends JFrame {
  *         - Riwayat Peminjaman Saya (UserHistoryPanel)
  *         - Buku Sedang Dipinjam
  *    - Ini memastikan mahasiswa gak bisa ngacak-ngacak data perpustakaan.
- * ==================================================================================
- */
- * 
+ *
  * 5. Update Terakhir:
  *    - Udah nambahin fitur Dashboard sebagai tampilan default.
- *    - Udah nambahin fitur Laporan (PDF) di tombol paling bawah.
- * ==================================================================================
+ *    - udah nambahin fitur Laporan (PDF) di tombol paling bawah.
+ * 
  */

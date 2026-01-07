@@ -1,6 +1,6 @@
 package id.ac.unpas.sajiwa.model;
 
-import id.ac.unpas.sajiwa.database.KoneksiDB;
+import id.ac.unpas.sajiwa.database.KoneksiDB; // Trigger Recompile
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

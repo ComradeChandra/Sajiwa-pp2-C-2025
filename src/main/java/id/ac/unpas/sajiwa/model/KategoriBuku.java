@@ -1,6 +1,6 @@
 package id.ac.unpas.sajiwa.model;
 
-public class KategoriBuku {
+public class KategoriBuku { // Recompile
 
     private int idKategori;
     private String namaKategori;

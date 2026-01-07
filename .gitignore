@@ -1,10 +1,10 @@
 /target/
+/nbproject/private/
+/dist/
 *.class
+*.log
 *.jar
 .nb-gradle/
 build/
-dist/
-nbproject/private/
 .vscode/
 .idea/
-*.log

@@ -2,6 +2,7 @@ package id.ac.unpas.sajiwa.controller;
         
 
 import id.ac.unpas.sajiwa.view.LoginView;
+import id.ac.unpas.sajiwa.view.RegisterView;
 import id.ac.unpas.sajiwa.view.MainFrame; // Import Dashboard Murod/Fitri
 import id.ac.unpas.sajiwa.database.KoneksiDB;
 import javax.swing.*;
@@ -15,8 +16,14 @@ public class LoginController {
         this.view = view;
         // Controller yang "dengerin" kalau tombol diklik
         view.btnLogin.addActionListener(e -> login());
-
+        view.btnRegister.addActionListener(e -> {
+            RegisterView regView = new RegisterView();
+            new RegisterController(regView);
+            regView.setVisible(true);                  
+            view.dispose();
+        });
     }
+
 
     private void login() {
         String username = view.txtUsername.getText();

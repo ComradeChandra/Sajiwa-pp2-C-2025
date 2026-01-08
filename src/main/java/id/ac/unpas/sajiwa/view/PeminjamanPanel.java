@@ -12,6 +12,11 @@ public class PeminjamanPanel extends JPanel {
     
     private JComboBox<String> cmbAnggota;
     private JComboBox<String> cmbBuku;
+    // [TAMBAHAN] Fitur Search & Filter
+    private JComboBox<String> cmbFilterStatus;
+    private JTextField txtCari;
+    private JButton btnCari;
+
     private JSpinner spinnerTanggal;
     private JButton btnPinjam, btnKembali, btnRefresh;
     private JTable tablePeminjaman;
@@ -118,8 +123,32 @@ public class PeminjamanPanel extends JPanel {
         
         JScrollPane scroll = new JScrollPane(tablePeminjaman);
         
+        // [TAMBAHAN] Panel Search & Filter di atas Tabel
+        JPanel panelTableContainer = new JPanel(new BorderLayout(5, 5));
+        panelTableContainer.setOpaque(false);
+        panelTableContainer.setBorder(BorderFactory.createTitledBorder(" Daftar Riwayat Transaksi "));
+        
+        JPanel panelSearch = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panelSearch.setOpaque(false);
+        
+        panelSearch.add(new JLabel("Status:"));
+        cmbFilterStatus = new JComboBox<>(new String[]{"Semua", "Dipinjam", "Dikembalikan"});
+        panelSearch.add(cmbFilterStatus);
+        
+        txtCari = new JTextField(20);
+        txtCari.putClientProperty("JTextField.placeholderText", "Cari Nama / Buku...");
+        panelSearch.add(txtCari);
+        
+        btnCari = new JButton("🔍 Cari");
+        btnCari.setBackground(new Color(52, 73, 94));
+        btnCari.setForeground(Color.WHITE);
+        panelSearch.add(btnCari);
+        
+        panelTableContainer.add(panelSearch, BorderLayout.NORTH);
+        panelTableContainer.add(scroll, BorderLayout.CENTER);
+
         panelCenter.add(panelForm, BorderLayout.NORTH);
-        panelCenter.add(scroll, BorderLayout.CENTER);
+        panelCenter.add(panelTableContainer, BorderLayout.CENTER);
         
         add(panelCenter, BorderLayout.CENTER);
     }
@@ -127,6 +156,9 @@ public class PeminjamanPanel extends JPanel {
     // Getters
     public JComboBox<String> getCmbAnggota() { return cmbAnggota; }
     public JComboBox<String> getCmbBuku() { return cmbBuku; }
+    public JComboBox<String> getCmbFilterStatus() { return cmbFilterStatus; } // [TAMBAHAN]
+    public JTextField getTxtCari() { return txtCari; } // [TAMBAHAN]
+    public JButton getBtnCari() { return btnCari; } // [TAMBAHAN]
     public JSpinner getSpinnerTanggal() { return spinnerTanggal; }
     public JButton getBtnPinjam() { return btnPinjam; }
     public JButton getBtnKembali() { return btnKembali; }

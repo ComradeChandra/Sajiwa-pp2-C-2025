@@ -21,6 +21,9 @@ public class AnggotaPanel extends JPanel {
     // Komponen UI
     private JTextField txtNim, txtNama, txtCari;
     private JComboBox<String> cmbProdi, cmbStatus;
+    // [TAMBAHAN] Filter Table
+    private JComboBox<String> cmbFilterProdi;
+    
     private JButton btnSimpan, btnUpdate, btnHapus, btnReset, btnCari, btnExport;
     private JTable tableAnggota;
     private DefaultTableModel tableModel;
@@ -132,6 +135,13 @@ public class AnggotaPanel extends JPanel {
         // Area Cari
         JPanel panelCari = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         panelCari.setOpaque(false);
+        
+        // Filter dropdown
+        panelCari.add(createLabel("Prodi: "));
+        String[] listFilterProdi = {"Semua", "Teknik Informatika", "Sistem Informasi", "Teknik Industri", "DKV", "Teknologi Pangan"};
+        cmbFilterProdi = new JComboBox<>(listFilterProdi);
+        panelCari.add(cmbFilterProdi);
+        
         txtCari = new JTextField(20);
         txtCari.putClientProperty("JTextField.placeholderText", "Cari Nama / NIM...");
         btnCari = createStyledButton("🔍 Cari", new Color(52, 73, 94), Color.WHITE);
@@ -198,7 +208,8 @@ public class AnggotaPanel extends JPanel {
         btn.setFocusPainted(false);
         return btn;
     }
-
+public JComboBox<String> getCmbFilterProdi() { return cmbFilterProdi; } // [TAMBAHAN]
+    
     // --- Public Getters (Untuk Controller) ---
     public JTextField getTxtNim() { return txtNim; }
     public JTextField getTxtNama() { return txtNama; }

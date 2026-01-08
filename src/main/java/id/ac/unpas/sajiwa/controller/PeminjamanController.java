@@ -3,8 +3,12 @@ package id.ac.unpas.sajiwa.controller;
 import id.ac.unpas.sajiwa.model.*;
 import id.ac.unpas.sajiwa.view.PeminjamanPanel;
 import javax.swing.*;
+import java.awt.Component; // [FIX] Import Component
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PeminjamanController {
     
@@ -30,7 +34,62 @@ public class PeminjamanController {
         view.getBtnRefresh().addActionListener(e -> {
             loadComboData();
             refreshTable();
+            view.getTxtCari().setText("");
+            view.getCmbFilterStatus().setSelectedIndex(0);
         });
+        
+        // [TAMBAHAN] Fitur Search & Filter
+        view.getBtnCari().addActionListener(e -> cariData());
+        view.getCmbFilterStatus().addActionListener(e -> cariData());
+        
+        // Auto Complete / Live Search
+        view.getTxtCari().addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                cariData();
+            }
+        });
+        
+        // Setup Auto Complete for ComboBox components (Search Suggestion)
+        setupAutoComplete(view.getCmbAnggota());
+        setupAutoComplete(view.getCmbBuku());
+    }
+    
+    private void setupAutoComplete(JComboBox<String> comboBox) {
+        // Simple ComboBox Editor Search
+        comboBox.setEditable(true);
+        Component editor = comboBox.getEditor().getEditorComponent();
+        if (editor instanceof JTextField) {
+            JTextField txt = (JTextField) editor;
+            txt.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyReleased(KeyEvent e) {
+                    // Fitur ini kompleks jika full implementasi, 
+                    // Basic: Membiarkan user mengetik untuk filter default swing (jika ada)
+                    // Atau: Custom Popup. 
+                    // Untuk saat ini kita biarkan default editable agar user bisa ketik manual.
+                }
+            });
+        }
+    }
+
+    private void cariData() {
+        String keyword = view.getTxtCari().getText().toLowerCase();
+        String statusFilter = (String) view.getCmbFilterStatus().getSelectedItem();
+        
+        List<Peminjaman> allData = model.getAllPeminjaman();
+        
+        List<Peminjaman> filtered = allData.stream()
+            .filter(p -> {
+                boolean matchName = p.getNamaAnggota().toLowerCase().contains(keyword);
+                boolean matchBook = p.getJudulBuku().toLowerCase().contains(keyword);
+                boolean matchStatus = statusFilter.equals("Semua") || p.getStatus().equalsIgnoreCase(statusFilter);
+                
+                return (matchName || matchBook) && matchStatus;
+            })
+            .collect(Collectors.toList());
+            
+        view.setTableData(filtered);
     }
     
     private void loadComboData() {

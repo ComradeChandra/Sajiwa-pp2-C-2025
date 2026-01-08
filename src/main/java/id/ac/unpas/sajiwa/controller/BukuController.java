@@ -3,9 +3,14 @@ package id.ac.unpas.sajiwa.controller;
 import id.ac.unpas.sajiwa.model.Buku;
 import id.ac.unpas.sajiwa.model.BukuModel;
 import id.ac.unpas.sajiwa.view.BukuPanel;
+import id.ac.unpas.sajiwa.model.KategoriBuku;
 import id.ac.unpas.sajiwa.model.KategoriBukuModel;
 import javax.swing.*;
+import java.awt.Component; // [TAMBAHAN] for AutoComplete
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BukuController {
     
@@ -28,9 +33,51 @@ public class BukuController {
         view.getBtnHapus().addActionListener(e -> hapusBuku());
         view.getBtnReset().addActionListener(e -> resetForm());
         view.getBtnCari().addActionListener(e -> cariBuku());
-        view.getBtnRefresh().addActionListener(e -> refreshTable());
+        view.getBtnRefresh().addActionListener(e -> {
+            refreshTable();
+            loadFilterData(); // Reload filter
+            view.getTxtCari().setText("");
+            view.getCmbFilterKategori().setSelectedIndex(0);
+        });
+        
+        // [TAMBAHAN] Filter & Live Search
+        loadFilterData();
+        view.getCmbFilterKategori().addActionListener(e -> cariBuku());
+        view.getTxtCari().addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                cariBuku();
+            }
+        });
+        
+        // Setup Auto Complete
+        setupAutoComplete(view.getCmbFilterKategori());
         
         refreshTable();
+    }
+    
+    private void setupAutoComplete(JComboBox<String> comboBox) {
+        comboBox.setEditable(true);
+        Component editor = comboBox.getEditor().getEditorComponent();
+        if (editor instanceof JTextField) {
+            JTextField txt = (JTextField) editor;
+            txt.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyReleased(KeyEvent e) {
+                   // Logic for future implementation
+                }
+            });
+        }
+    }
+    
+    private void loadFilterData() {
+        view.getCmbFilterKategori().removeAllItems();
+        view.getCmbFilterKategori().addItem("Semua Kategori");
+        
+        List<KategoriBuku> list = kategoriModel.getAllKategori();
+        for(KategoriBuku k : list) {
+            view.getCmbFilterKategori().addItem(k.getNamaKategori());
+        }
     }
     
     private void refreshTable() {
@@ -153,32 +200,27 @@ public class BukuController {
             }
         }
     }
-    
+
     private void cariBuku() {
         String keyword = view.getTxtCari().getText().toLowerCase();
+        String kategoriFilter = (String) view.getCmbFilterKategori().getSelectedItem();
         
-        // Ambil semua data dari model
         List<Buku> allBuku = model.getAllBuku();
         
-        // Jika keyword kosong, tampilkan semua
-        if (keyword.isEmpty()) {
-            view.setTableData(allBuku);
-            return;
-        }
-        
-        // Filter manual (Client-side filtering)
         List<Buku> filtered = allBuku.stream()
-                .filter(b -> b.getJudul().toLowerCase().contains(keyword) || 
-                             b.getIsbn().toLowerCase().contains(keyword) ||
-                             b.getNamaKategori().toLowerCase().contains(keyword))
-                .toList();
+                .filter(b -> {
+                    boolean matchKeyword = b.getJudul().toLowerCase().contains(keyword) || 
+                                           b.getIsbn().toLowerCase().contains(keyword) ||
+                                           b.getNamaKategori().toLowerCase().contains(keyword);
+                    
+                    boolean matchFilter = kategoriFilter == null || kategoriFilter.equals("Semua Kategori") || 
+                                          b.getNamaKategori().equalsIgnoreCase(kategoriFilter);
+                                          
+                    return matchKeyword && matchFilter;
+                })
+                .collect(Collectors.toList());
         
-        // Update tabel
         view.setTableData(filtered);
-        
-        if (filtered.isEmpty()) {
-            JOptionPane.showMessageDialog(view, "Data tidak ditemukan!");
-        }
     }
     
     private void resetForm() {
@@ -191,5 +233,8 @@ public class BukuController {
           - Kelebihan: Cepat, tidak perlu query DB berulang-ulang.
           - Cara kerja: Load semua data -> Filter di memori berdasarkan Judul/ISBN/Kategori -> Update Tabel.
        3. Validasi: Menjaga agar stok buku yang diinput user harus berupa angka (NumberFormatException handling).
+       4. [TAMBAHAN] Fitur UI & UX:
+          - Filter dropdown kategori.
+          - Auto Complete (Live Search) saat mengetik judul.
     */
 }

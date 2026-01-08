@@ -15,6 +15,9 @@ import java.util.List;
 public class BukuPanel extends JPanel {
     // Komponen UI
     private JTextField txtIsbn, txtJudul, txtStok, txtIdKategori, txtCari;
+    // [TAMBAHAN] Filter
+    private JComboBox<String> cmbFilterKategori;
+    
     private JButton btnTambah, btnUpdate, btnHapus, btnBersih, btnCari, btnRefresh, btnCetak;
     private JTable tableBuku;
     private DefaultTableModel tableModel;
@@ -139,6 +142,14 @@ public class BukuPanel extends JPanel {
         // Area Cari
         JPanel panelCari = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         panelCari.setOpaque(false);
+        
+        // [TAMBAHAN] Filter UI
+        panelCari.add(createLabel("Kategori: "));
+        cmbFilterKategori = new JComboBox<>();
+        cmbFilterKategori.addItem("Semua Kategori");
+        // Item lain diisi oleh Controller
+        panelCari.add(cmbFilterKategori);
+        
         txtCari = new JTextField(20);
         txtCari.putClientProperty("JTextField.placeholderText", "Cari Judul / ISBN...");
         
@@ -219,6 +230,7 @@ public class BukuPanel extends JPanel {
     public JTextField getTxtStok() { return txtStok; }
     public JTextField getTxtIdKategori() { return txtIdKategori; }
     public JTextField getTxtCari() { return txtCari; }
+    public JComboBox<String> getCmbFilterKategori() { return cmbFilterKategori; } // [TAMBAHAN]
 
     public JButton getBtnSimpan() { return btnTambah; }
     public JButton getBtnUpdate() { return btnUpdate; }

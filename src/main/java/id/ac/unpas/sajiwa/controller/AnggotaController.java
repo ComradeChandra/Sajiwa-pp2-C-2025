@@ -14,7 +14,11 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
-import javax.swing.JOptionPane;
+import java.util.stream.Collectors; // [TAMBAHAN]
+import java.awt.Component; // [TAMBAHAN]
+import java.awt.event.KeyAdapter; // [TAMBAHAN]
+import java.awt.event.KeyEvent; // [TAMBAHAN]
+import javax.swing.*; // [TAMBAHAN] Import semua swing components
 
 /**
  * Controller untuk mengelola interaksi antara AnggotaPanel (View) dan AnggotaModel (Model)
@@ -39,6 +43,34 @@ public class AnggotaController {
         view.getBtnReset().addActionListener(e -> view.clearForm());
         view.getBtnCari().addActionListener(e -> cariAnggota());
         view.getBtnExport().addActionListener(e -> exportPdf());
+        
+        // [TAMBAHAN] Filter & Live Search
+        view.getCmbFilterProdi().addActionListener(e -> cariAnggota());
+        view.getTxtCari().addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                cariAnggota();
+            }
+        });
+        
+        // Setup Auto Complete
+        setupAutoComplete(view.getCmbProdi());
+        setupAutoComplete(view.getCmbStatus());
+        setupAutoComplete(view.getCmbFilterProdi());
+    }
+    
+    private void setupAutoComplete(JComboBox<String> comboBox) {
+        comboBox.setEditable(true);
+        Component editor = comboBox.getEditor().getEditorComponent();
+        if (editor instanceof JTextField) {
+            JTextField txt = (JTextField) editor;
+            txt.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyReleased(KeyEvent e) {
+                   // Logic for future implementation
+                }
+            });
+        }
     }
 
     public void loadData() {
@@ -123,16 +155,16 @@ public class AnggotaController {
 
     private void cariAnggota() {
         String keyword = view.getTxtCari().getText().toLowerCase();
-        if (keyword.isEmpty()) {
-            loadData();
-            return;
-        }
-
-        // Logika pencarian sederhana di sisi client (bisa juga dipindah ke query SQL khusus di model)
+        String prodiFilter = (String) view.getCmbFilterProdi().getSelectedItem(); 
+        
         List<Anggota> allData = model.getAllAnggota();
         List<Anggota> filteredData = allData.stream()
-                .filter(a -> a.getNamaMahasiswa().toLowerCase().contains(keyword) || a.getNim().toLowerCase().contains(keyword))
-                .toList();
+                .filter(a -> {
+                    boolean matchName = a.getNamaMahasiswa().toLowerCase().contains(keyword) || a.getNim().toLowerCase().contains(keyword);
+                    boolean matchProdi = prodiFilter == null || prodiFilter.equals("Semua") || a.getProgramStudi().equals(prodiFilter);
+                    return matchName && matchProdi;
+                })
+                .collect(Collectors.toList());
         
         view.setTableData(filteredData);
     }

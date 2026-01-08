@@ -128,7 +128,9 @@ public class MainFrame extends JFrame {
         btnLogout.addActionListener(e -> {
             int confirm = JOptionPane.showConfirmDialog(this, "Yakin mau keluar?", "Logout", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
-                new LoginView().setVisible(true); // Balik ke Login
+                LoginView loginView = new LoginView();
+                new id.ac.unpas.sajiwa.controller.LoginController(loginView); // Controller dipasang agar tombol berfungsi
+                loginView.setVisible(true); 
                 dispose();
             }
         });

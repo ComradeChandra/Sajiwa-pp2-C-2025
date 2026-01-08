@@ -96,11 +96,27 @@ public class BukuController {
             return;
         }
 
+        if (view.getTxtIdKategori().getText().isEmpty()) {
+            JOptionPane.showMessageDialog(view, "ID Kategori wajib diisi!");
+            return;
+        }
+
         try {
             Buku buku = new Buku();
             buku.setIsbn(view.getTxtIsbn().getText());
             buku.setJudul(view.getTxtJudul().getText());
             buku.setStok(Integer.parseInt(view.getTxtStok().getText()));
+
+            int idKategori = Integer.parseInt(view.getTxtIdKategori().getText());
+
+            if (!kategoriModel.existsById(idKategori)) {
+                JOptionPane.showMessageDialog(view,
+                        "ID Kategori tidak ditemukan di database!",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            buku.setIdKategori(idKategori);
             
             // Set default biar gak null
             buku.setPengarang("-");

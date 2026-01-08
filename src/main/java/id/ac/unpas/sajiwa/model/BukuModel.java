@@ -52,7 +52,7 @@ public class BukuModel {
             pstmt.setString(2, buku.getJudul());
             pstmt.setInt(3, buku.getStok());
             pstmt.setInt(4, buku.getIdKategori());
-            
+
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Gagal menambah buku: " + e.getMessage());

@@ -3,7 +3,7 @@ package id.ac.unpas.sajiwa.controller;
 import id.ac.unpas.sajiwa.model.Buku;
 import id.ac.unpas.sajiwa.model.BukuModel;
 import id.ac.unpas.sajiwa.view.BukuPanel;
-
+import id.ac.unpas.sajiwa.model.KategoriBukuModel;
 import javax.swing.*;
 import java.util.List;
 
@@ -11,10 +11,13 @@ public class BukuController {
     
     private BukuPanel view;
     private BukuModel model;
-    
+    private KategoriBukuModel kategoriModel;
+
+
     public BukuController(BukuPanel view) {
         this.view = view;
-        this.model = new BukuModel(); 
+        this.model = new BukuModel();
+        this.kategoriModel = new KategoriBukuModel();
         
         initController();
     }
@@ -38,8 +41,12 @@ public class BukuController {
     
     private void simpanBuku() {
         // Validasi
-        if (view.getTxtIsbn().getText().isEmpty() || view.getTxtJudul().getText().isEmpty()) {
-            JOptionPane.showMessageDialog(view, "ISBN dan Judul Wajib diisi!");
+        if (view.getTxtIsbn().getText().isEmpty() ||
+                view.getTxtJudul().getText().isEmpty() ||
+                view.getTxtIdKategori().getText().isEmpty()) {
+
+            JOptionPane.showMessageDialog(view,
+                    "ISBN, Judul, dan ID Kategori wajib diisi!");
             return;
         }
         
@@ -47,10 +54,21 @@ public class BukuController {
             Buku buku = new Buku();
             buku.setIsbn(view.getTxtIsbn().getText());
             buku.setJudul(view.getTxtJudul().getText());
-            
+
             // Karena di Panel Fitri cuma ada Stok, kita set Stok aja
             int stok = Integer.parseInt(view.getTxtStok().getText());
             buku.setStok(stok);
+
+            int idKategori = Integer.parseInt(view.getTxtIdKategori().getText());
+
+            if (!kategoriModel.existsById(idKategori)) {
+                JOptionPane.showMessageDialog(view,
+                        "ID Kategori tidak ditemukan di database!",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            buku.setIdKategori(idKategori);
             
             // Data lain set default dulu (karena Panel belum lengkap)
             buku.setPengarang("-");

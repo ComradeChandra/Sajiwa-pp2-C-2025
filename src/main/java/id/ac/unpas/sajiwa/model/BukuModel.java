@@ -45,7 +45,6 @@ public class BukuModel {
      */
     public void addBuku(Buku buku) {
         String sql = "INSERT INTO buku (isbn, judul, stok, id_kategori) VALUES (?, ?, ?, ?)";
-
         try (Connection conn = KoneksiDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -53,7 +52,7 @@ public class BukuModel {
             pstmt.setString(2, buku.getJudul());
             pstmt.setInt(3, buku.getStok());
             pstmt.setInt(4, buku.getIdKategori());
-
+            
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Gagal menambah buku: " + e.getMessage());

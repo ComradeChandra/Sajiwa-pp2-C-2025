@@ -16,6 +16,22 @@ public class KategoriBukuModel {
         }
     }
 
+    public boolean existsById(int idKategori) {
+        String sql = "SELECT 1 FROM kategori_buku WHERE id_kategori = ?";
+        try (Connection c = KoneksiDB.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+
+            ps.setInt(1, idKategori);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
     // INSERT kategori
     public void addKategori(KategoriBuku kategori) {
         validateKategori(kategori);

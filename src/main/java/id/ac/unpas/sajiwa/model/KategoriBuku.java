@@ -15,6 +15,11 @@ public class KategoriBuku { // Recompile
         this.namaKategori = namaKategori;
     }
 
+    @Override
+    public String toString() {
+        return namaKategori;
+    }
+
     // Getter dan Setter
     public int getIdKategori() {
         return idKategori;
